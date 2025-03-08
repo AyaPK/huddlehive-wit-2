@@ -28,7 +28,7 @@ export function AnimatedPixelBee() {
 
   return (
     <Animated.View style={{ transform: [{ translateY: yPosition }] }}>
-      <PixelBeeImage />
+      <PixelBeeImage variant="large" />
     </Animated.View>
   );
 }

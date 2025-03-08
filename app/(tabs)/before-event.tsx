@@ -1,12 +1,19 @@
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { EventPrepJourney } from '@/components/EventPrepJourney';
 
 export default function BeforeEventScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText style={styles.title}>Event Prep Guide</ThemedText>
-      <ThemedText style={styles.subtitle}>Get ready for your special day!</ThemedText>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <ThemedText style={styles.title}>Event Prep Guide</ThemedText>
+        <ThemedText style={styles.subtitle}>Follow the journey to prepare for your special day!</ThemedText>
+        <EventPrepJourney />
+      </ScrollView>
     </ThemedView>
   );
 }
@@ -14,9 +21,13 @@ export default function BeforeEventScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    gap: 8,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    alignItems: 'center',
+    paddingVertical: 40,
+    gap: 24,
   },
   title: {
     fontSize: 24,
@@ -25,5 +36,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     opacity: 0.8,
+    textAlign: 'center',
+    paddingHorizontal: 20,
   },
 });

@@ -8,10 +8,17 @@ import { BeeHealthBar } from '@/components/BeeHealthBar';
 export default function IndexScreen() {
   return (
     <ThemedView style={styles.container}>
+<<<<<<< HEAD
       <ThemedText style={styles.title}>Welcome to the Buddee network!</ThemedText>
       <View style={styles.beeContainer}>
         <View style={styles.beeWrapper}>
           <AnimatedPixelBee />
+=======
+      <ThemedText style={styles.title}>Welcome to HuddleHive!</ThemedText>
+      <View style={styles.beeContainer}>
+        <View style={styles.beeWrapper}>
+          <PixelBeeImage variant="large" />
+>>>>>>> a516128 (Add events journey)
           <BeeHealthBar currentHealth={75} maxHealth={100} />
         </View>
       </View>
