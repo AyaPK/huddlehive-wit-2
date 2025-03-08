@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Pressable, Animated } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { PixelBeeImage } from './PixelBeeImage';
+import { useInventory } from '@/context/InventoryContext';
 
 interface Task {
   id: number;
@@ -20,6 +21,7 @@ const TASKS: Task[] = [
 export const EventPrepJourney: React.FC = () => {
   const [currentTask, setCurrentTask] = useState(1);
   const [beePosition] = useState(new Animated.Value(0));
+  const { selectedSkin } = useInventory();
 
   const moveBeeTo = (taskId: number) => {
     if (taskId <= currentTask + 1) {
@@ -59,7 +61,7 @@ export const EventPrepJourney: React.FC = () => {
               },
             ]}
           >
-            <PixelBeeImage variant="small" />
+            <PixelBeeImage variant="small" skin={selectedSkin} />
           </Animated.View>
           {TASKS.map((task) => (
             <Pressable

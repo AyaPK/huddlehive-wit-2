@@ -1,9 +1,9 @@
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
-import BeeImage from './ui/bee-big.png';
 
 interface PixelBeeImageProps {
   variant?: 'large' | 'small';
+  skin?: 'normal' | 'rainbow';
 }
 
 const styles = StyleSheet.create({
@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export const PixelBeeImage: React.FC<PixelBeeImageProps> = ({ variant = 'large' }) => {
+export const PixelBeeImage: React.FC<PixelBeeImageProps> = ({ variant = 'large', skin = 'normal' }) => {
   return (
     <Image 
-      source={BeeImage} 
+      source={skin === 'rainbow' ? require('@/components/ui/bee-rainbow.png') : require('@/components/ui/bee-big.png')} 
       style={[
         styles.beeImage,
         variant === 'small' ? styles.smallBee : styles.largeBee,

@@ -1,14 +1,19 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+import {
+  BaseballCap,
+  ChefHat,
+} from '@/components/ui/pixel-accessories';
 import { AccessoryItem } from './AccessoryItem';
 import { SkinItem } from './SkinItem';
 import { PageLayout } from '@/components/PageLayout';
 import { shopStyles } from '@/styles/shop';
 import { useInventory } from '@/context/InventoryContext';
-import { ChefHat, BaseballCap } from '@/components/ui/pixel-accessories';
+import { AnimatedPixelBee } from '@/components/AnimatedPixelBee';
 
 export default function AccessoriesScreen() {
-  const { purchasedAccessories, purchasedSkins } = useInventory();
+  const { purchasedAccessories, purchasedSkins, selectedSkin, setSelectedSkin } = useInventory();
 
   const defaultAccessories = [
     { name: 'Chef Hat', Component: ChefHat, color: '#FFFFFF' },
@@ -22,12 +27,26 @@ export default function AccessoriesScreen() {
     <PageLayout>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <ThemedText style={styles.pageTitle}>My Accessories</ThemedText>
+        <View style={styles.beeContainer}>
+          <View style={styles.beeWrapper}>
+            <AnimatedPixelBee skin={selectedSkin} />
+          </View>
+        </View>
         {allSkins.length > 0 && (
           <>
             <ThemedText style={styles.subtitle}>Your Skins</ThemedText>
             <View style={shopStyles.grid}>
-              {allSkins.map((skin, index) => (
-                <SkinItem key={index} {...skin} />
+              {allSkins.map((item, index) => (
+                <SkinItem 
+                  key={index} 
+                  {...item} 
+                  onPress={() => {
+                    // Convert skin name to lowercase and ensure it's either 'normal' or 'rainbow'
+                    const newSkin = item.name.toLowerCase();
+                    setSelectedSkin(newSkin === 'rainbow' ? 'rainbow' : 'normal');
+                  }}
+                  selected={item.name.toLowerCase() === selectedSkin} 
+                />
               ))}
             </View>
           </>
@@ -51,6 +70,19 @@ export default function AccessoriesScreen() {
 }
 
 export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  beeContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    gap: 20,
+    justifyContent: 'center',
+  },
+  beeWrapper: {
+    alignItems: 'center',
+    gap: 12,
+  },
   scrollView: {
     flex: 1,
     padding: 16,

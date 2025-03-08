@@ -7,6 +7,8 @@ import { useCoinBalance } from './CoinBalanceContext';
 interface InventoryContextType {
   purchasedSkins: ShopItemProps[];
   purchasedAccessories: AccessoryItemProps[];
+  selectedSkin: 'normal' | 'rainbow';
+  setSelectedSkin: (skin: 'normal' | 'rainbow') => void;
   tryPurchaseItem: (item: ShopItemProps | AccessoryItemProps) => void;
 }
 
@@ -18,6 +20,7 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
     { name: 'Purple', color: '#9932CC' }, // Brighter purple (Dark Orchid)
   ]);
   const [purchasedAccessories, setPurchasedAccessories] = useState<AccessoryItemProps[]>([]);
+  const [selectedSkin, setSelectedSkin] = useState<'normal' | 'rainbow'>('normal');
   const { balance, removeCoins } = useCoinBalance();
 
   const tryPurchaseItem = (item: ShopItemProps | AccessoryItemProps) => {
@@ -58,7 +61,13 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <InventoryContext.Provider value={{ purchasedSkins, purchasedAccessories, tryPurchaseItem }}>
+    <InventoryContext.Provider value={{ 
+      purchasedSkins, 
+      purchasedAccessories, 
+      selectedSkin,
+      setSelectedSkin,
+      tryPurchaseItem 
+    }}>
       {children}
     </InventoryContext.Provider>
   );

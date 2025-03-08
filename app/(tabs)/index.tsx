@@ -8,10 +8,13 @@ import { Toast } from '@/components/Toast';
 import { GardenBackground } from '@/components/GardenBackground';
 import { PageLayout } from '@/components/PageLayout';
 import React from 'react';
+import { useInventory } from '@/context/InventoryContext';
 
 export default function IndexScreen() {
   const { currentHealth, maxHealth, resetHealth } = useBeeHealth();
   const [showToast, setShowToast] = React.useState(false);
+  const { selectedSkin } = useInventory();
+  
 
   const handleReset = () => {
     resetHealth();
@@ -25,7 +28,7 @@ export default function IndexScreen() {
         <ThemedText style={styles.title}>Welcome to the Buddee network!</ThemedText>
         <View style={styles.beeContainer}>
           <View style={styles.beeWrapper}>
-            <AnimatedPixelBee />
+            <AnimatedPixelBee skin={selectedSkin}/>
             <BeeHealthBar currentHealth={currentHealth} maxHealth={maxHealth} />
             <Pressable style={styles.resetButton} onPress={handleReset}>
               <ThemedText style={styles.resetButtonText}>Reset Health</ThemedText>
