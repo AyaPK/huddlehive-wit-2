@@ -4,12 +4,16 @@ import { ThemedView } from '@/components/ThemedView';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { events } from './index';
 import React from 'react';
+import { useBeeHealth } from '@/store/beeHealth';
+import { Toast } from '@/components/Toast';
 
 export default function CheckInScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const [code, setCode] = React.useState('');
   const [error, setError] = React.useState('');
+  const [showToast, setShowToast] = React.useState(false);
+  const { increaseHealth } = useBeeHealth();
   const event = events.find(e => e.id === id);
 
   if (!event) {
@@ -22,9 +26,12 @@ export default function CheckInScreen() {
 
   const handleCheckIn = () => {
     if (code.toUpperCase() === event.checkInCode) {
-      // TODO: Handle successful check-in
+      increaseHealth(25);
+      setShowToast(true);
       setError('');
-      router.back();
+      setTimeout(() => {
+        router.back();
+      }, 2000);
     } else {
       setError('Incorrect check-in code. Please try again.');
     }
@@ -56,6 +63,13 @@ export default function CheckInScreen() {
           <ThemedText style={styles.buttonText}>Submit</ThemedText>
         </Pressable>
       </ThemedView>
+
+      {showToast && (
+        <Toast
+          message="🐝 Your Buddee gained +25 health points!"
+          onHide={() => setShowToast(false)}
+        />
+      )}
     </ThemedView>
   );
 }
