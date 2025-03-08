@@ -11,7 +11,7 @@
     "test": "jest --watchAll",
     "lint": "expo lint",
     "build": "npx expo export -p web",
-    "vercel-build": "npx expo export -p web",
+    "vercel-build": "NODE_ENV=production npx expo export -p web",
     "deploy": "vercel deploy --prod"
   },
   "jest": {

@@ -35,6 +35,14 @@ const nextConfig = {
     ];
     return config;
   },
+
+  // Ensure proper handling of dynamic routes
+  experimental: {
+    forceSwcTransforms: true,
+  },
+
+  // Configure output for static exports
+  output: 'export',
 };
 
 module.exports = nextConfig;

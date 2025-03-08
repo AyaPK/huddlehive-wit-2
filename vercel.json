@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "npx expo export -p web",
+  "buildCommand": "NODE_ENV=production npx expo export -p web",
   "outputDirectory": "dist",
   "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "EXPO_ROUTER_APP_ROOT": "./app"
+  }
 }
