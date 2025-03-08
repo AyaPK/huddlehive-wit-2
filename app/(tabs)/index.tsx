@@ -1,11 +1,12 @@
 import { StyleSheet, View, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { Link } from 'expo-router';
 import { AnimatedPixelBee } from '@/components/AnimatedPixelBee';
 import { BeeHealthBar } from '@/components/BeeHealthBar';
 import { useBeeHealth } from '@/store/beeHealth';
 import { Toast } from '@/components/Toast';
+import { GardenBackground } from '@/components/GardenBackground';
+import { PageLayout } from '@/components/PageLayout';
 import React from 'react';
 
 export default function IndexScreen() {
@@ -18,15 +19,18 @@ export default function IndexScreen() {
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText style={styles.title}>Welcome to the Buddee network!</ThemedText>
-      <View style={styles.beeContainer}>
-        <View style={styles.beeWrapper}>
-          <AnimatedPixelBee />
-          <BeeHealthBar currentHealth={currentHealth} maxHealth={maxHealth} />
-          <Pressable style={styles.resetButton} onPress={handleReset}>
-            <ThemedText style={styles.resetButtonText}>Reset Health</ThemedText>
-          </Pressable>
+    <PageLayout>
+      <GardenBackground />
+      <View style={styles.content}>
+        <ThemedText style={styles.title}>Welcome to the Buddee network!</ThemedText>
+        <View style={styles.beeContainer}>
+          <View style={styles.beeWrapper}>
+            <AnimatedPixelBee />
+            <BeeHealthBar currentHealth={currentHealth} maxHealth={maxHealth} />
+            <Pressable style={styles.resetButton} onPress={handleReset}>
+              <ThemedText style={styles.resetButtonText}>Reset Health</ThemedText>
+            </Pressable>
+          </View>
         </View>
       </View>
 
@@ -36,12 +40,12 @@ export default function IndexScreen() {
           onHide={() => setShowToast(false)}
         />
       )}
-    </ThemedView>
+    </PageLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -61,6 +65,10 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#2C3333',
+    textShadowColor: 'rgba(255, 255, 255, 0.5)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   resetButton: {
     backgroundColor: '#FF3B30',

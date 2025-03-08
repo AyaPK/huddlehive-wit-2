@@ -1,11 +1,11 @@
-import { StyleSheet, TextInput, Pressable } from 'react-native';
+import { StyleSheet, TextInput, Pressable, View } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { events } from './index';
 import React from 'react';
 import { useBeeHealth } from '@/store/beeHealth';
 import { Toast } from '@/components/Toast';
+import { PageLayout } from '@/components/PageLayout';
 
 export default function CheckInScreen() {
   const { id } = useLocalSearchParams();
@@ -18,9 +18,9 @@ export default function CheckInScreen() {
 
   if (!event) {
     return (
-      <ThemedView style={styles.container}>
+      <PageLayout>
         <ThemedText style={styles.errorText}>Event not found</ThemedText>
-      </ThemedView>
+      </PageLayout>
     );
   }
 
@@ -38,8 +38,8 @@ export default function CheckInScreen() {
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedView style={styles.card}>
+    <PageLayout>
+      <View style={styles.card}>
         <ThemedText style={styles.title}>Check In to {event.title}</ThemedText>
         <ThemedText style={styles.description}>
           Please enter the check-in code provided by the event organizer.
@@ -56,13 +56,10 @@ export default function CheckInScreen() {
         
         {error ? <ThemedText style={styles.errorText}>{error}</ThemedText> : null}
         
-        <Pressable 
-          style={[styles.button, styles.checkInButton]}
-          onPress={handleCheckIn}
-        >
-          <ThemedText style={styles.buttonText}>Submit</ThemedText>
+        <Pressable style={styles.button} onPress={handleCheckIn}>
+          <ThemedText style={styles.buttonText}>Check In</ThemedText>
         </Pressable>
-      </ThemedView>
+      </View>
 
       {showToast && (
         <Toast
@@ -70,63 +67,64 @@ export default function CheckInScreen() {
           onHide={() => setShowToast(false)}
         />
       )}
-    </ThemedView>
+    </PageLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-    padding: 16,
-  },
   card: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 16,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    padding: 20,
+    borderRadius: 16,
+    width: '100%',
+    maxWidth: 400,
+    alignSelf: 'center',
+    marginTop: 40,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000000',
     marginBottom: 16,
+    color: '#2C3333',
+    textAlign: 'center',
   },
   description: {
     fontSize: 16,
-    color: '#444444',
     marginBottom: 24,
+    color: '#666666',
+    textAlign: 'center',
   },
   input: {
-    backgroundColor: '#f8f8f8',
-    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
     padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E1E1E1',
     fontSize: 16,
-    color: '#000000',
     marginBottom: 16,
   },
   button: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    backgroundColor: '#007AFF',
+    padding: 16,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 8,
-  },
-  checkInButton: {
-    backgroundColor: '#34C759',
   },
   buttonText: {
-    color: '#ffffff',
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
   },
   errorText: {
-    fontSize: 14,
-    color: '#ff3b30',
+    color: '#FF3B30',
     marginBottom: 16,
+    textAlign: 'center',
   },
 });
