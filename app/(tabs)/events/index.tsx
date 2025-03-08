@@ -3,6 +3,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Ionicons } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
+import { PageLayout } from '@/components/PageLayout';
 
 // Event type definition for better type safety and documentation
 export type Event = {
@@ -85,7 +86,7 @@ function EventCard({ event }: { event: Event }) {
   const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
 
   return (
-    <ThemedView style={[styles.card, { backgroundColor: '#ffffff' }]}>
+    <ThemedView style={styles.card}>
       <ThemedView style={styles.dateStrip}>
         <ThemedText style={styles.date}>
           {formattedDate}
@@ -93,8 +94,8 @@ function EventCard({ event }: { event: Event }) {
         <ThemedText style={styles.time}>{event.time}</ThemedText>
       </ThemedView>
       
-      <ThemedView style={[styles.content, { backgroundColor: '#ffffff' }]}>
-        <ThemedText style={[styles.title, { color: '#000000' }]}>{event.title}</ThemedText>
+      <ThemedView style={styles.content}>
+        <ThemedText style={styles.title}>{event.title}</ThemedText>
         <ThemedView style={styles.locationContainer}>
           <Ionicons name="location-outline" size={16} color="#666666" />
           <ThemedText style={styles.location}>{event.location}</ThemedText>
@@ -122,25 +123,34 @@ function EventCard({ event }: { event: Event }) {
 
 export default function EventsScreen() {
   return (
-    <ThemedView style={[styles.container, { backgroundColor: '#f5f5f5' }]}>
+    <PageLayout>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <ThemedText style={styles.pageTitle}>Upcoming Events</ThemedText>
         {events.map(event => (
           <EventCard key={event.id} event={event} />
         ))}
       </ScrollView>
-    </ThemedView>
+    </PageLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   scrollView: {
     flex: 1,
     padding: 16,
   },
+  pageTitle: {
+    fontSize: 28,
+    fontWeight: '700',
+    marginBottom: 24,
+    color: '#2C3333',
+    textAlign: 'center',
+    textShadowColor: 'rgba(255, 255, 255, 0.5)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
   card: {
+    backgroundColor: '#ffffff',
     borderRadius: 12,
     marginBottom: 16,
     shadowColor: '#000000',
@@ -149,6 +159,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     overflow: 'hidden',
+    maxWidth: 600,
+    alignSelf: 'center',
+    width: '100%',
   },
   dateStrip: {
     backgroundColor: '#007AFF',
@@ -166,11 +179,13 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
+    backgroundColor: '#ffffff',
   },
   title: {
     fontSize: 20,
     fontWeight: '600',
     marginBottom: 8,
+    color: '#2C3333',
   },
   locationContainer: {
     flexDirection: 'row',

@@ -1,20 +1,19 @@
-import { ScrollView, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { PageLayout } from '@/components/PageLayout';
 import { EventPrepJourney } from '@/components/EventPrepJourney';
 
 export default function BeforeEventScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <ScrollView 
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <ThemedText style={styles.title}>Event Prep Guide</ThemedText>
-        <ThemedText style={styles.subtitle}>Follow the journey to prepare for your special day!</ThemedText>
+    <PageLayout>
+      <View style={styles.container}>
+        <ThemedText style={styles.title}>Event Preparation</ThemedText>
+        <ThemedText style={styles.subtitle}>
+          Complete these tasks to prepare for your event
+        </ThemedText>
         <EventPrepJourney />
-      </ScrollView>
-    </ThemedView>
+      </View>
+    </PageLayout>
   );
 }
 
@@ -22,21 +21,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-  },
-  scrollContent: {
-    flexGrow: 1,
-    alignItems: 'center',
-    paddingVertical: 40,
-    gap: 24,
+    paddingTop: 40,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
+    marginBottom: 12,
+    color: '#2C3333',
+    textShadowColor: 'rgba(255, 255, 255, 0.5)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   subtitle: {
     fontSize: 16,
-    opacity: 0.8,
+    color: '#2C3333',
+    marginBottom: 32,
     textAlign: 'center',
-    paddingHorizontal: 20,
+    textShadowColor: 'rgba(255, 255, 255, 0.5)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
 });
