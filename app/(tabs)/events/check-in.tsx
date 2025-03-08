@@ -42,7 +42,7 @@ export default function CheckInScreen() {
           style={styles.input}
           value={code}
           onChangeText={setCode}
-          placeholder="Enter check-in code (e.g. WORD-WORD-WORD)"
+          placeholder="Enter check-in code (e.g. HAPPY-HACKY-PARTY)"
           placeholderTextColor="#666666"
           autoCapitalize="characters"
         />
