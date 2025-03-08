@@ -9,6 +9,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { CoinBalanceProvider } from '@/context/CoinBalanceContext';
 import { InventoryProvider } from '@/context/InventoryContext';
+import { SignupProvider } from '@/hooks/useSignupState';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -33,10 +34,12 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <CoinBalanceProvider>
         <InventoryProvider>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)" />
-          </Stack>
-          <StatusBar style="auto" />
+          <SignupProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="(tabs)" />
+            </Stack>
+            <StatusBar style="auto" />
+          </SignupProvider>
         </InventoryProvider>
       </CoinBalanceProvider>
     </ThemeProvider>

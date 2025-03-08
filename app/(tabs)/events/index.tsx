@@ -4,6 +4,8 @@ import { ThemedView } from '@/components/ThemedView';
 import { Ionicons } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
 import { PageLayout } from '@/components/PageLayout';
+import { useSignupState } from '@/hooks/useSignupState';
+import React from 'react';
 
 // Event type definition for better type safety and documentation
 export type Event = {
@@ -19,6 +21,82 @@ export type Event = {
   requirements?: string;
   checkInCode?: string;
 };
+
+function EventCard({ event }: { event: Event }) {
+  const router = useRouter();
+  const { isSignedUp, signUpForEvent } = useSignupState();
+  const formattedDate = new Date(event.date).toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+
+  const currentDate = new Date('2025-03-08T17:46:44Z');
+  const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
+  const hasSignedUp = isSignedUp(event.id);
+
+  return (
+    <ThemedView style={styles.card}>
+      <ThemedView style={styles.dateStrip}>
+        <ThemedText style={styles.date}>
+          {formattedDate}
+        </ThemedText>
+        <ThemedText style={styles.time}>{event.time}</ThemedText>
+      </ThemedView>
+      
+      <ThemedView style={styles.content}>
+        <ThemedText style={styles.title}>{event.title}</ThemedText>
+        <ThemedView style={styles.locationContainer}>
+          <Ionicons name="location-outline" size={16} color="#666666" />
+          <ThemedText style={styles.location}>{event.location}</ThemedText>
+        </ThemedView>
+        <ThemedText style={styles.description}>{event.description}</ThemedText>
+        
+        <ThemedView style={styles.buttonContainer}>
+          <Pressable 
+            style={[
+              styles.button, 
+              isToday ? styles.checkInButton : 
+              hasSignedUp ? styles.signedUpButton : styles.signupButton
+            ]}
+            onPress={() => {
+              if (isToday) {
+                router.push(`/events/check-in?id=${event.id}`);
+              } else if (!hasSignedUp) {
+                signUpForEvent(event.id);
+              }
+            }}
+            disabled={hasSignedUp && !isToday}
+          >
+            <ThemedText style={styles.buttonText}>
+              {isToday ? 'Check In' : hasSignedUp ? 'Signed Up' : 'Sign Up'}
+            </ThemedText>
+          </Pressable>
+          <Pressable 
+            style={[styles.button, styles.detailsButton]}
+            onPress={() => router.push({ pathname: "/events/[id]", params: { id: event.id }})}
+          >
+            <ThemedText style={styles.buttonText}>Details</ThemedText>
+          </Pressable>
+        </ThemedView>
+      </ThemedView>
+    </ThemedView>
+  );
+}
+
+export default function EventsScreen() {
+  return (
+    <PageLayout>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <ThemedText style={styles.pageTitle}>Upcoming Events</ThemedText>
+        {events.map(event => (
+          <EventCard key={event.id} event={event} />
+        ))}
+      </ScrollView>
+    </PageLayout>
+  );
+}
 
 // Sample events data - easy to modify
 export const events: Event[] = [
@@ -73,67 +151,6 @@ export const events: Event[] = [
   },
 ];
 
-function EventCard({ event }: { event: Event }) {
-  const router = useRouter();
-  const formattedDate = new Date(event.date).toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric'
-  });
-
-  const currentDate = new Date('2025-03-08T14:37:45Z');
-  const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
-
-  return (
-    <ThemedView style={styles.card}>
-      <ThemedView style={styles.dateStrip}>
-        <ThemedText style={styles.date}>
-          {formattedDate}
-        </ThemedText>
-        <ThemedText style={styles.time}>{event.time}</ThemedText>
-      </ThemedView>
-      
-      <ThemedView style={styles.content}>
-        <ThemedText style={styles.title}>{event.title}</ThemedText>
-        <ThemedView style={styles.locationContainer}>
-          <Ionicons name="location-outline" size={16} color="#666666" />
-          <ThemedText style={styles.location}>{event.location}</ThemedText>
-        </ThemedView>
-        <ThemedText style={styles.description}>{event.description}</ThemedText>
-        
-        <ThemedView style={styles.buttonContainer}>
-          <Pressable 
-            style={[styles.button, isToday ? styles.checkInButton : styles.signupButton]}
-            onPress={() => isToday ? router.push(`/events/check-in?id=${event.id}`) : undefined}
-          >
-            <ThemedText style={styles.buttonText}>{isToday ? 'Check In' : 'Sign Up'}</ThemedText>
-          </Pressable>
-          <Pressable 
-            style={[styles.button, styles.detailsButton]}
-            onPress={() => router.push({ pathname: "/events/[id]", params: { id: event.id }})}
-          >
-            <ThemedText style={styles.buttonText}>Details</ThemedText>
-          </Pressable>
-        </ThemedView>
-      </ThemedView>
-    </ThemedView>
-  );
-}
-
-export default function EventsScreen() {
-  return (
-    <PageLayout>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <ThemedText style={styles.pageTitle}>Upcoming Events</ThemedText>
-        {events.map(event => (
-          <EventCard key={event.id} event={event} />
-        ))}
-      </ScrollView>
-    </PageLayout>
-  );
-}
-
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
@@ -183,8 +200,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: '600',
     marginBottom: 8,
+    fontWeight: '600',
     color: '#2C3333',
   },
   locationContainer: {
@@ -198,8 +215,8 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   description: {
-    fontSize: 14,
     color: '#444444',
+    fontSize: 14,
     marginBottom: 16,
     lineHeight: 20,
   },
@@ -217,6 +234,9 @@ const styles = StyleSheet.create({
   },
   signupButton: {
     backgroundColor: '#007AFF',
+  },
+  signedUpButton: {
+    backgroundColor: '#34C759',
   },
   checkInButton: {
     backgroundColor: '#34C759',

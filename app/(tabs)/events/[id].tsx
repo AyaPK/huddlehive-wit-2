@@ -6,11 +6,13 @@ import { events } from './index';
 import { Ionicons } from '@expo/vector-icons';
 import { PageLayout } from '@/components/PageLayout';
 import React from 'react';
+import { useSignupState } from '@/hooks/useSignupState';
 
 export default function EventDetailsScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const [isImageLoading, setIsImageLoading] = React.useState(true);
+  const { isSignedUp, signUpForEvent } = useSignupState();
   const event = events.find(e => e.id === id);
 
   if (!event) {
@@ -29,6 +31,10 @@ export default function EventDetailsScreen() {
     day: 'numeric',
     year: 'numeric'
   });
+
+  const currentDate = new Date('2025-03-08T17:44:20Z');
+  const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
+  const hasSignedUp = isSignedUp(event.id);
 
   return (
     <PageLayout>
@@ -83,21 +89,25 @@ export default function EventDetailsScreen() {
                 </ThemedView>
               )}
 
-              {/* Check if event is today and render appropriate button */}
-              {(() => {
-                const currentDate = new Date('2025-03-08T14:48:24Z');
-                const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
-                return (
-                  <Pressable 
-                    style={[styles.button, isToday ? styles.checkInButton : styles.signupButton]}
-                    onPress={() => isToday ? router.push(`/events/check-in?id=${event.id}`) : undefined}
-                  >
-                    <ThemedText style={styles.buttonText}>
-                      {isToday ? 'Check In' : 'Sign Up for Event'}
-                    </ThemedText>
-                  </Pressable>
-                );
-              })()}
+              <Pressable 
+                style={[
+                  styles.button,
+                  isToday ? styles.checkInButton : 
+                  hasSignedUp ? styles.signedUpButton : styles.signupButton
+                ]}
+                onPress={() => {
+                  if (isToday) {
+                    router.push(`/events/check-in?id=${event.id}`);
+                  } else if (!hasSignedUp) {
+                    signUpForEvent(event.id);
+                  }
+                }}
+                disabled={hasSignedUp && !isToday}
+              >
+                <ThemedText style={styles.buttonText}>
+                  {isToday ? 'Check In' : hasSignedUp ? 'Signed Up' : 'Sign Up for Event'}
+                </ThemedText>
+              </Pressable>
             </ThemedView>
           </View>
         </View>
@@ -116,6 +126,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     width: '100%',
+    padding: 16,
   },
   card: {
     backgroundColor: '#ffffff',
@@ -226,6 +237,9 @@ const styles = StyleSheet.create({
   },
   signupButton: {
     backgroundColor: '#007AFF',
+  },
+  signedUpButton: {
+    backgroundColor: '#34C759',
   },
   checkInButton: {
     backgroundColor: '#34C759',
