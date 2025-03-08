@@ -33,11 +33,11 @@ const events: Event[] = [
   },
   {
     id: '3',
-    title: 'Art Exhibition',
+    title: 'Hackathon',
     date: '2025-07-01',
     time: '11:00',
-    location: 'City Gallery',
-    description: 'Featuring local artists and their masterpieces'
+    location: 'Zoopla Offices',
+    description: 'For amazing women to come and make amazing things!'
   },
 ];
 

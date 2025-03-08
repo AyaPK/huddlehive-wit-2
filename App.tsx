@@ -4,10 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 // Import screens
-import HomeScreen from './app/screens/HomeScreen';
 import AccessoriesScreen from './app/screens/AccessoriesScreen';
 import EventsScreen from './app/screens/EventsScreen';
-import SettingsScreen from './app/screens/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,9 +27,6 @@ export default function App() {
               case 'Events':
                 iconName = focused ? 'calendar' : 'calendar-outline';
                 break;
-              case 'Settings':
-                iconName = focused ? 'settings' : 'settings-outline';
-                break;
               default:
                 iconName = 'help';
             }
@@ -42,10 +37,8 @@ export default function App() {
           tabBarInactiveTintColor: 'gray',
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Accessories" component={AccessoriesScreen} />
         <Tab.Screen name="Events" component={EventsScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
