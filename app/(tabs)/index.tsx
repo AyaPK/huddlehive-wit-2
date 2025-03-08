@@ -1,20 +1,41 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Link } from 'expo-router';
 import { AnimatedPixelBee } from '@/components/AnimatedPixelBee';
 import { BeeHealthBar } from '@/components/BeeHealthBar';
+import { useBeeHealth } from '@/store/beeHealth';
+import { Toast } from '@/components/Toast';
+import React from 'react';
 
 export default function IndexScreen() {
+  const { currentHealth, maxHealth, resetHealth } = useBeeHealth();
+  const [showToast, setShowToast] = React.useState(false);
+
+  const handleReset = () => {
+    resetHealth();
+    setShowToast(true);
+  };
+
   return (
     <ThemedView style={styles.container}>
       <ThemedText style={styles.title}>Welcome to the Buddee network!</ThemedText>
       <View style={styles.beeContainer}>
         <View style={styles.beeWrapper}>
           <AnimatedPixelBee />
-          <BeeHealthBar currentHealth={75} maxHealth={100} />
+          <BeeHealthBar currentHealth={currentHealth} maxHealth={maxHealth} />
+          <Pressable style={styles.resetButton} onPress={handleReset}>
+            <ThemedText style={styles.resetButtonText}>Reset Health</ThemedText>
+          </Pressable>
         </View>
       </View>
+
+      {showToast && (
+        <Toast
+          message="🐝 Bee health reset to default!"
+          onHide={() => setShowToast(false)}
+        />
+      )}
     </ThemedView>
   );
 }
@@ -41,11 +62,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  link: {
-    marginTop: 16,
+  resetButton: {
+    backgroundColor: '#FF3B30',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginTop: 8,
   },
-  linkText: {
-    fontSize: 16,
-    color: '#007AFF',
+  resetButtonText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });
