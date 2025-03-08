@@ -1,7 +1,11 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useWindowDimensions } from 'react-native';
 
 export default function TabLayout() {
+  const { width } = useWindowDimensions();
+  const isSmallScreen = width < 768;
+
   return (
     <Tabs
       screenOptions={({ route }) => ({
@@ -26,10 +30,16 @@ export default function TabLayout() {
               iconName = 'help';
           }
 
-          return <Ionicons name={iconName as any} size={size} color={color} />;
+          return <Ionicons name={iconName as any} size={isSmallScreen ? 24 : 20} color={color} />;
         },
         tabBarActiveTintColor: '#007AFF',
         tabBarInactiveTintColor: 'gray',
+        tabBarShowLabel: !isSmallScreen,
+        tabBarStyle: {
+          height: isSmallScreen ? 64 : 50,
+          paddingBottom: isSmallScreen ? 12 : 0,
+          paddingTop: isSmallScreen ? 8 : 0,
+        },
       })}
     >
       <Tabs.Screen
