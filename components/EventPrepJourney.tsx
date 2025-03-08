@@ -148,7 +148,10 @@ const styles = StyleSheet.create({
   taskInfo: {
     alignItems: 'center',
     gap: 8,
-    paddingTop: 20,
+    padding: 20,
+    backgroundColor: '#efefef',
+    borderRadius: 16,
+    width: 400,
   },
   taskTitle: {
     fontSize: 20,
