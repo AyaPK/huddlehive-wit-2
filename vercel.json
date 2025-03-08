@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "expo-router/entry.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "expo-router/entry.js"
+    }
+  ],
+  "regions": ["lhr1"],
+  "github": {
+    "silent": true
+  }
+}

@@ -1,8 +1,24 @@
-# Welcome to your Expo app 👋
+# HuddleHive Events
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern event management application built with Expo and React Native, featuring a beautiful card-based UI for managing and checking into events.
 
-## Get started
+## Features
+
+- Modern, card-based event list with beautiful UI
+- Event details view with rich content and images
+- Check-in system with health points rewards
+- Responsive design with mobile-first approach
+- Tab-based navigation with consistent styling
+
+## Tech Stack
+
+- Expo Router for file-based navigation
+- React Native for cross-platform development
+- TypeScript for type safety
+- Styled Components for styling
+- Expo Vector Icons for beautiful iconography
+
+## Getting Started
 
 1. Install dependencies
 
@@ -10,41 +26,74 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Start the development server
 
    ```bash
-    npx expo start
+   npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+## Deployment on Vercel
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+1. Install Vercel CLI globally (if not already installed)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+   ```bash
+   npm install -g vercel
+   ```
 
-## Get a fresh project
+2. Build the web version
 
-When you're ready, run:
+   ```bash
+   npm run build
+   ```
 
-```bash
-npm run reset-project
-```
+3. Deploy to Vercel
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+   ```bash
+   npm run deploy
+   ```
 
-## Learn more
+   Or connect your GitHub repository to Vercel for automatic deployments:
 
-To learn more about developing your project with Expo, look at the following resources:
+   1. Push your code to GitHub
+   2. Visit [Vercel](https://vercel.com)
+   3. Import your repository
+   4. Configure the following settings:
+      - Framework Preset: `Other`
+      - Build Command: `npm run vercel-build`
+      - Output Directory: `web-build`
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Project Structure
 
-## Join the community
+- `app/(tabs)/_layout.tsx`: Root tab navigation
+- `app/(tabs)/events/_layout.tsx`: Events stack navigation
+- `app/(tabs)/events/`:
+  - `index.tsx`: Events list with card UI
+  - `[id].tsx`: Event details view
+  - `check-in.tsx`: Event check-in screen
 
-Join our community of developers creating universal apps.
+## Design System
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Colors:
+  - Primary Blue: `#007AFF`
+  - Success Green: `#34C759`
+  - Error Red: `#FF3B30`
+  - Inactive Gray: `#666666`
+- Typography:
+  - Clean hierarchy
+  - Responsive sizing
+- Components:
+  - Card-based layouts with shadows
+  - Consistent spacing
+  - Modern UI elements
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
