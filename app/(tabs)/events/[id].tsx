@@ -79,9 +79,18 @@ export default function EventDetailsScreen() {
               </ThemedView>
             )}
 
-            <Pressable style={[styles.button, styles.signupButton]}>
-              <ThemedText style={styles.buttonText}>Sign Up for Event</ThemedText>
-            </Pressable>
+            {/* Check if event is today and render appropriate button */}
+            {(() => {
+              const currentDate = new Date('2025-03-08T14:37:45Z');
+              const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
+              return (
+                <Pressable style={[styles.button, isToday ? styles.checkInButton : styles.signupButton]}>
+                  <ThemedText style={styles.buttonText}>
+                    {isToday ? 'Check In' : 'Sign Up for Event'}
+                  </ThemedText>
+                </Pressable>
+              );
+            })()}
           </ThemedView>
         </ThemedView>
       </ScrollView>
@@ -192,10 +201,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     borderRadius: 8,
     alignItems: 'center',
-    backgroundColor: '#007AFF',
   },
   signupButton: {
     backgroundColor: '#007AFF',
+  },
+  checkInButton: {
+    backgroundColor: '#34C759',
   },
   buttonText: {
     color: '#ffffff',
