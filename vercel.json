@@ -1,19 +1,11 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "expo-router/entry.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "expo-router/entry.js"
-    }
-  ],
-  "regions": ["lhr1"],
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "dist",
+  "framework": "other",
+  "regions": ["iad1"],
   "github": {
-    "silent": true
+    "silent": true,
+    "autoAlias": true
   }
 }
