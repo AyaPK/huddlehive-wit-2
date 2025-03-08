@@ -16,6 +16,7 @@ export type Event = {
   organizer?: string;
   fullDescription?: string;
   requirements?: string;
+  checkInCode?: string;
 };
 
 // Sample events data - easy to modify
@@ -30,7 +31,8 @@ export const events: Event[] = [
     imageUrl: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=800',
     organizer: 'Community Events Team',
     fullDescription: 'Get ready for an exciting evening of strategy, luck, and friendly competition! Our Summer Game Night brings together board game enthusiasts and newcomers alike. We\'ll have a wide selection of games from classic favorites to modern hits. Light refreshments will be provided, and our experienced game masters will be there to explain rules and get you started.',
-    requirements: 'No experience necessary! Just bring your enthusiasm and readiness to learn. Ages 16+'
+    requirements: 'No experience necessary! Just bring your enthusiasm and readiness to learn. Ages 16+',
+    checkInCode: 'HAPPY-GAME-NIGHT'
   },
   {
     id: '1',
@@ -100,7 +102,10 @@ function EventCard({ event }: { event: Event }) {
         <ThemedText style={styles.description}>{event.description}</ThemedText>
         
         <ThemedView style={styles.buttonContainer}>
-          <Pressable style={[styles.button, isToday ? styles.checkInButton : styles.signupButton]}>
+          <Pressable 
+            style={[styles.button, isToday ? styles.checkInButton : styles.signupButton]}
+            onPress={() => isToday ? router.push(`/events/check-in?id=${event.id}`) : undefined}
+          >
             <ThemedText style={styles.buttonText}>{isToday ? 'Check In' : 'Sign Up'}</ThemedText>
           </Pressable>
           <Pressable 

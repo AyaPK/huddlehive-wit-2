@@ -1,13 +1,14 @@
 import { StyleSheet, Pressable, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { events } from './index';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 
 export default function EventDetailsScreen() {
   const { id } = useLocalSearchParams();
+  const router = useRouter();
   const [isImageLoading, setIsImageLoading] = React.useState(true);
   const event = events.find(e => e.id === id);
 
@@ -81,10 +82,13 @@ export default function EventDetailsScreen() {
 
             {/* Check if event is today and render appropriate button */}
             {(() => {
-              const currentDate = new Date('2025-03-08T14:37:45Z');
+              const currentDate = new Date('2025-03-08T14:48:24Z');
               const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
               return (
-                <Pressable style={[styles.button, isToday ? styles.checkInButton : styles.signupButton]}>
+                <Pressable 
+                  style={[styles.button, isToday ? styles.checkInButton : styles.signupButton]}
+                  onPress={() => isToday ? router.push(`/events/check-in?id=${event.id}`) : undefined}
+                >
                   <ThemedText style={styles.buttonText}>
                     {isToday ? 'Check In' : 'Sign Up for Event'}
                   </ThemedText>

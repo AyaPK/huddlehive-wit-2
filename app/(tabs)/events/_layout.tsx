@@ -7,31 +7,40 @@ export default function EventsLayout() {
         name="index"
         options={{
           title: 'Events',
-          headerShown: true,
           headerStyle: {
             backgroundColor: '#ffffff',
           },
           headerTitleStyle: {
-            fontSize: 20,
             fontWeight: 'bold',
-            color: '#000000',
           },
+          headerTintColor: '#007AFF',
         }}
       />
       <Stack.Screen
         name="[id]"
         options={{
           title: 'Event Details',
-          headerShown: true,
           headerStyle: {
             backgroundColor: '#ffffff',
           },
-          headerTintColor: '#007AFF',
           headerTitleStyle: {
-            fontSize: 20,
             fontWeight: 'bold',
-            color: '#000000',
           },
+          headerTintColor: '#007AFF',
+        }}
+      />
+      <Stack.Screen
+        name="check-in"
+        options={{
+          title: 'Event Check-In',
+          headerStyle: {
+            backgroundColor: '#ffffff',
+          },
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTintColor: '#007AFF',
+          presentation: 'modal',
         }}
       />
     </Stack>
