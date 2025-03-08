@@ -1,63 +1,46 @@
-import { Platform, Pressable, StyleSheet, View } from 'react-native';
-import { Link } from 'expo-router';
-import { ThemedText } from '@/components/ThemedText';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import {
   BaseballCap,
-  CatEarsHeadband,
   ChefHat,
-  Fedora,
-  NewsBoy
 } from '@/components/ui/pixel-accessories';
-
-interface AccessoryItemProps {
-  name: string;
-  Component: React.ComponentType<{ size: number; color: string }>;
-  color?: string;
-}
-
-const AccessoryItem: React.FC<AccessoryItemProps> = ({ name, Component, color = '#663399' }) => (
-  <Pressable
-    style={({ hovered }) => [
-      styles.accessoryItem,
-      hovered && {
-        backgroundColor: '#00000022',
-        transform: Platform.select({
-          web: 'scale(1.05)',
-          default: undefined,
-        }),
-      },
-    ]}
-  >
-    <Component size={64} color={color} />
-    <ThemedText style={styles.text}>{name}</ThemedText>
-  </Pressable>
-);
+import { AccessoryItemProps } from './AccessoryItemProps';
+import { AccessoryItem } from './AccessoryItem';
+import { SkinItem } from './SkinItem';
 
 export default function AccessoriesScreen() {
   const accessories: AccessoryItemProps[] = [
-    { name: 'Cat Ears', Component: CatEarsHeadband, color: '#FF69B4' },
-    { name: 'Fedora', Component: Fedora, color: '#8B4513' },
-    { name: 'News Boy', Component: NewsBoy, color: '#4A4A4A' },
     { name: 'Chef Hat', Component: ChefHat, color: '#FFFFFF' },
     { name: 'Baseball Cap', Component: BaseballCap, color: '#1E90FF' },
   ];
 
+  const skins = [
+    { name: 'Pink', color: '#FF69B4' },
+    { name: 'Brown', color: '#8B4513' },]
+
   return (
     <ThemedView style={styles.container}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
       <View style={styles.grid}>
         {accessories.map((accessory, index) => (
           <AccessoryItem key={index} {...accessory} />
         ))}
+        {skins.map((item, index) => (
+          <SkinItem key={index} {...item} />
+        ))}
       </View>
+      </ScrollView>
     </ThemedView>
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+  },
+  scrollView: {
+    flex: 1,
+    padding: 16,
   },
   header: {
     flexDirection: 'row',
@@ -76,13 +59,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     ...(Platform.OS === 'web' ? {
       cursor: 'pointer',
-      transitionProperty: 'transform, background-color',
-      transitionDuration: '200ms',
+      transition: 'all 200ms ease',
     } : {}),
-  },
-  shopButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
   },
   grid: {
     flexDirection: 'row',
@@ -99,12 +77,21 @@ const styles = StyleSheet.create({
     minWidth: 120,
     ...(Platform.OS === 'web' ? {
       cursor: 'pointer',
-      transitionProperty: 'transform, background-color',
-      transitionDuration: '200ms',
+      transition: 'all 200ms ease',
     } : {}),
   },
   text: {
     fontSize: 16,
     fontWeight: '500',
+  },
+  price: {
+    fontSize: 14,
+    fontWeight: '500',
+    marginLeft: 4,
+  },
+  priceContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
 });
