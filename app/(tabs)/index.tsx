@@ -3,13 +3,17 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Link } from 'expo-router';
 import { PixelBeeImage } from '@/components/PixelBeeImage';
+import { BeeHealthBar } from '@/components/BeeHealthBar';
 
 export default function IndexScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText style={styles.text}>Welcome to HuddleHive!</ThemedText>
       <View style={styles.beeContainer}>
-        <PixelBeeImage />
+        <View style={styles.beeWrapper}>
+          <PixelBeeImage />
+          <BeeHealthBar currentHealth={75} maxHealth={100} />
+        </View>
       </View>
     </ThemedView>
   );
@@ -28,6 +32,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
     gap: 20,
+  },
+  beeWrapper: {
+    alignItems: 'center',
+    gap: 12,
   },
   text: {
     fontSize: 24,

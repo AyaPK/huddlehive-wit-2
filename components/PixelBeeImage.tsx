@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     transform: [{ scale: 2 }],
+    marginBottom: 50
   },
 });
 
