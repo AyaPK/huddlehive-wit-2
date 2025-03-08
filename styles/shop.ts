@@ -22,6 +22,10 @@ export const shopStyles = StyleSheet.create({
     borderRadius: 28,
     borderWidth: 2,
     borderColor: '#00000022',
+    overflow: 'hidden',
+    ...(Platform.OS === 'web' ? {
+      transition: 'transform 200ms ease',
+    } : {}),
   },
   text: {
     fontSize: 14,

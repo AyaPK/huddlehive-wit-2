@@ -5,8 +5,19 @@ import { AccessoryItemProps } from "./AccessoryItemProps";
 import { CoinIcon } from "@/components/ui/CoinIcon";
 import { shopStyles } from "@/styles/shop";
 
-export const AccessoryItem: React.FC<AccessoryItemProps> = ({ name, Component, color = '#663399', price }) => (
+interface AccessoryItemComponentProps extends AccessoryItemProps {
+  onPress?: () => void;
+}
+
+export const AccessoryItem: React.FC<AccessoryItemComponentProps> = ({ 
+  name, 
+  Component, 
+  color = '#663399', 
+  price,
+  onPress 
+}) => (
   <Pressable
+    onPress={onPress}
     style={({ pressed, hovered }): StyleProp<ViewStyle> => [
       shopStyles.itemContainer,
       (pressed || hovered) && {
