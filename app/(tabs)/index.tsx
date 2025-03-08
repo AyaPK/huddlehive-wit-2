@@ -2,16 +2,16 @@ import { StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Link } from 'expo-router';
-import { PixelBeeImage } from '@/components/PixelBeeImage';
+import { AnimatedPixelBee } from '@/components/AnimatedPixelBee';
 import { BeeHealthBar } from '@/components/BeeHealthBar';
 
 export default function IndexScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText style={styles.text}>Welcome to HuddleHive!</ThemedText>
+      <ThemedText style={styles.title}>Welcome to HuddleHive!</ThemedText>
       <View style={styles.beeContainer}>
         <View style={styles.beeWrapper}>
-          <PixelBeeImage />
+          <AnimatedPixelBee />
           <BeeHealthBar currentHealth={75} maxHealth={100} />
         </View>
       </View>
