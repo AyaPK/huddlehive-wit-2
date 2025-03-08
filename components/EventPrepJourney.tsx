@@ -10,11 +10,11 @@ interface Task {
 }
 
 const TASKS: Task[] = [
-  { id: 1, title: 'Plan Budget', description: 'Set your event budget and financial goals' },
-  { id: 2, title: 'Choose Theme', description: 'Select your event theme and color scheme' },
-  { id: 3, title: 'Find Venue', description: 'Research and book your perfect venue' },
-  { id: 4, title: 'Send Invites', description: 'Create and send out your invitations' },
-  { id: 5, title: 'Attend Event', description: 'Enjoy your special day!' },
+  { id: 1, title: 'Clear Your Calendar', description: 'Make sure you have time to attend this event' },
+  { id: 2, title: 'See Other Buddees Joining', description: 'Find Buddees to connect with at this event' },
+  { id: 3, title: 'Find Venue', description: 'Research the venue' },
+  { id: 4, title: 'Plan Your Journey', description: 'Make sure you can get to your destination and are bringing all the essentials' },
+  { id: 5, title: 'Attend Event', description: 'Enjoy the event!' },
 ];
 
 export const EventPrepJourney: React.FC = () => {
