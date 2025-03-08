@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center',
     gap: 20,
     padding: 20,
   },
@@ -37,9 +36,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
   title: {
     fontSize: 28,
     fontWeight: 'bold',
