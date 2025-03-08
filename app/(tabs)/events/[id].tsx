@@ -36,18 +36,17 @@ export default function EventDetailsScreen() {
         <View style={styles.container}>
           <View style={styles.card}>
             <View style={styles.imageContainer}>
-              <Image
-                source={{ uri: event.imageUrl }}
-                style={styles.image}
-                resizeMode="cover"
-                onLoadStart={() => setIsImageLoading(true)}
-                onLoadEnd={() => setIsImageLoading(false)}
-              />
               {isImageLoading && (
                 <ThemedView style={styles.imageLoadingOverlay}>
                   <ActivityIndicator size="large" color="#007AFF" />
                 </ThemedView>
               )}
+              <Image
+                source={{ uri: event.imageUrl }}
+                style={[styles.image, isImageLoading && styles.hiddenImage]}
+                onLoadStart={() => setIsImageLoading(true)}
+                onLoadEnd={() => setIsImageLoading(false)}
+              />
             </View>
 
             <ThemedView style={styles.dateStrip}>
@@ -110,37 +109,42 @@ export default function EventDetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center' as const,
-    paddingTop: 40,
+    alignItems: 'center',
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   scrollView: {
     flex: 1,
-    padding: 16,
+    width: '100%',
   },
   card: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    padding: 20,
-    borderRadius: 16,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
     width: '100%',
-    maxWidth: 400,
+    maxWidth: 600,
+    marginHorizontal: 'auto',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    overflow: 'hidden',
   },
   imageContainer: {
     position: 'relative',
     width: '100%',
-    height: 200,
-    backgroundColor: '#e1e1e1',
+    height: 250,
+    backgroundColor: '#f5f5f5',
   },
   image: {
     width: '100%',
     height: '100%',
+  },
+  hiddenImage: {
+    opacity: 0,
   },
   imageLoadingOverlay: {
     position: 'absolute',
@@ -148,9 +152,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: '#f5f5f5',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 1,
   },
   dateStrip: {
     backgroundColor: '#007AFF',
@@ -167,18 +172,18 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   content: {
-    padding: 16,
+    padding: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000000',
+    color: '#2C3333',
     marginBottom: 16,
   },
   infoContainer: {
     backgroundColor: '#f8f8f8',
     borderRadius: 8,
-    padding: 12,
+    padding: 16,
     marginBottom: 24,
   },
   infoRow: {
@@ -203,8 +208,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#000000',
-    marginBottom: 12,
+    color: '#2C3333',
+    marginBottom: 8,
   },
   description: {
     fontSize: 16,
@@ -216,6 +221,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     borderRadius: 8,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
   },
   signupButton: {
     backgroundColor: '#007AFF',
@@ -224,12 +231,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#34C759',
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: '#ffffff',
     fontSize: 16,
     fontWeight: '600',
   },
   errorText: {
-    fontSize: 16,
-    color: '#666666',
+    fontSize: 18,
+    color: '#FF3B30',
+    textAlign: 'center',
   },
 });

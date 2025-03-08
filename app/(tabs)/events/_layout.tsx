@@ -1,45 +1,43 @@
 import { Stack } from 'expo-router';
+import { View } from 'react-native';
+import { useCoinBalance } from '@/context/CoinBalanceContext';
+import { CoinBalance } from '@/components/ui/CoinBalance';
 
 export default function EventsLayout() {
+  const { balance } = useCoinBalance();
+  
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#ffffff',
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        headerTintColor: '#007AFF',
+        headerRight: () => (
+          <View style={{ marginRight: 16 }}>
+            <CoinBalance balance={balance} />
+          </View>
+        ),
+      }}>
       <Stack.Screen
         name="index"
         options={{
           title: 'Events',
-          headerStyle: {
-            backgroundColor: '#ffffff',
-          },
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTintColor: '#007AFF',
         }}
       />
       <Stack.Screen
         name="[id]"
         options={{
           title: 'Event Details',
-          headerStyle: {
-            backgroundColor: '#ffffff',
-          },
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTintColor: '#007AFF',
         }}
       />
       <Stack.Screen
         name="check-in"
         options={{
           title: 'Event Check-In',
-          headerStyle: {
-            backgroundColor: '#ffffff',
-          },
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTintColor: '#007AFF',
           presentation: 'modal',
         }}
       />

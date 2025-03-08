@@ -31,15 +31,12 @@ export default function TabLayout() {
         tabBarIconStyle: {
           marginBottom: showLabels ? 0 : 0,
         },
-        headerRight: () => <CoinBalance balance={balance} />,
-        headerRightContainerStyle: {
-          paddingRight: 16,
-        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
+          headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons 
               name={focused ? 'home' : 'home-outline'} 
@@ -53,6 +50,7 @@ export default function TabLayout() {
         name="before-event"
         options={{
           title: 'Event Prep',
+          headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons 
               name={focused ? 'time' : 'time-outline'} 
@@ -66,6 +64,7 @@ export default function TabLayout() {
         name="accessories"
         options={{
           title: 'Accessories',
+          headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons 
               name={focused ? 'pricetag' : 'pricetag-outline'} 
@@ -79,6 +78,7 @@ export default function TabLayout() {
         name="shop"
         options={{
           title: 'Shop',
+          headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons 
               name={focused ? 'cart' : 'cart-outline'} 
@@ -106,6 +106,7 @@ export default function TabLayout() {
         name="settings"
         options={{
           title: 'Settings',
+          headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons 
               name={focused ? 'settings' : 'settings-outline'} 
