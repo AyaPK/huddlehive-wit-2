@@ -43,6 +43,19 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="before-event"
+        options={{
+          title: 'Event Prep',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons 
+              name={focused ? 'time' : 'time-outline'} 
+              size={24} 
+              color={color} 
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="accessories"
         options={{
           title: 'Accessories',
