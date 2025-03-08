@@ -13,7 +13,7 @@ import { useInventory } from '@/context/InventoryContext';
 export default function IndexScreen() {
   const { currentHealth, maxHealth, resetHealth } = useBeeHealth();
   const [showToast, setShowToast] = React.useState(false);
-  const { selectedSkin } = useInventory();
+  const { selectedSkin, selectedAccessory } = useInventory();
   
 
   const handleReset = () => {
@@ -28,7 +28,7 @@ export default function IndexScreen() {
         <ThemedText style={styles.title}>Welcome to the Buddee network!</ThemedText>
         <View style={styles.beeContainer}>
           <View style={styles.beeWrapper}>
-            <AnimatedPixelBee skin={selectedSkin}/>
+            <AnimatedPixelBee skin={selectedSkin} accessory={selectedAccessory} />
             <BeeHealthBar currentHealth={currentHealth} maxHealth={maxHealth} />
             <Pressable style={styles.resetButton} onPress={handleReset}>
               <ThemedText style={styles.resetButtonText}>Reset Health</ThemedText>

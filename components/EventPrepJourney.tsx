@@ -21,7 +21,7 @@ const TASKS: Task[] = [
 export const EventPrepJourney: React.FC = () => {
   const [currentTask, setCurrentTask] = useState(1);
   const [beePosition] = useState(new Animated.Value(0));
-  const { selectedSkin } = useInventory();
+  const { selectedSkin, selectedAccessory } = useInventory();
 
   const moveBeeTo = (taskId: number) => {
     if (taskId <= currentTask + 1) {
@@ -61,7 +61,7 @@ export const EventPrepJourney: React.FC = () => {
               },
             ]}
           >
-            <PixelBeeImage variant="small" skin={selectedSkin} />
+            <PixelBeeImage variant="small" skin={selectedSkin} accessory={selectedAccessory} />
           </Animated.View>
           {TASKS.map((task) => (
             <Pressable

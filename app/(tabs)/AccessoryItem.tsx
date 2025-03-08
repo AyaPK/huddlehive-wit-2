@@ -7,6 +7,7 @@ import { shopStyles } from "@/styles/shop";
 
 interface AccessoryItemComponentProps extends AccessoryItemProps {
   onPress?: () => void;
+  selected?: boolean;
 }
 
 export const AccessoryItem: React.FC<AccessoryItemComponentProps> = ({ 
@@ -14,12 +15,18 @@ export const AccessoryItem: React.FC<AccessoryItemComponentProps> = ({
   Component, 
   color = '#663399', 
   price,
-  onPress 
+  onPress,
+  selected 
 }) => (
   <Pressable
     onPress={onPress}
     style={({ pressed, hovered }): StyleProp<ViewStyle> => [
       shopStyles.itemContainer,
+      selected && {
+        backgroundColor: '#00000022',
+        borderWidth: 2,
+        borderColor: '#007AFF',
+      },
       (pressed || hovered) && {
         backgroundColor: '#00000022',
         transform: [{

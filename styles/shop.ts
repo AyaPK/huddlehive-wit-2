@@ -39,6 +39,7 @@ export const shopStyles = StyleSheet.create({
     marginTop: 8,
     textAlign: 'center',
     color: '#2C3333',
+    textTransform: 'capitalize',
   },
   grid: {
     flexDirection: 'row',

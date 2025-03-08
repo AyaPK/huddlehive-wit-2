@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated } from 'react-native';
 import { PixelBeeImage } from './PixelBeeImage';
+import { SKIN_TYPE, ACCESSORY_TYPE } from '@/constants/Accessories';
 
-export function AnimatedPixelBee({ skin = 'normal' }: { skin?: 'normal' | 'rainbow' }) {
+export function AnimatedPixelBee({ skin = SKIN_TYPE.NORMAL, accessory }: { skin?: SKIN_TYPE, accessory?: ACCESSORY_TYPE }) {
   const yPosition = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export function AnimatedPixelBee({ skin = 'normal' }: { skin?: 'normal' | 'rainb
 
   return (
     <Animated.View style={{ transform: [{ translateY: yPosition }] }}>
-      <PixelBeeImage variant="large" skin={skin} />
+      <PixelBeeImage variant="large" skin={skin} accessory={accessory} />
     </Animated.View>
   );
 }
