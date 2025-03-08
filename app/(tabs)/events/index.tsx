@@ -3,6 +3,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Ionicons } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
+import React from 'react';
 
 // Event type definition for better type safety and documentation
 export type Event = {
@@ -83,10 +84,11 @@ function EventCard({ event }: { event: Event }) {
 
   const currentDate = new Date('2025-03-08T14:37:45Z');
   const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
+  const [isSignedUp, setIsSignedUp] = React.useState(false);
 
   return (
     <ThemedView style={[styles.card, { backgroundColor: '#ffffff' }]}>
-      <ThemedView style={styles.dateStrip}>
+      <ThemedView style={[styles.dateStrip, isSignedUp && { backgroundColor: '#34C759' }]}>
         <ThemedText style={styles.date}>
           {formattedDate}
         </ThemedText>
@@ -103,10 +105,17 @@ function EventCard({ event }: { event: Event }) {
         
         <ThemedView style={styles.buttonContainer}>
           <Pressable 
-            style={[styles.button, isToday ? styles.checkInButton : styles.signupButton]}
-            onPress={() => isToday ? router.push(`/events/check-in?id=${event.id}`) : undefined}
+            style={[styles.button, isToday ? styles.checkInButton : isSignedUp ? styles.signedUpButton : styles.signupButton]}
+            onPress={() => {
+              if (isToday) {
+                router.push(`/events/check-in?id=${event.id}`);
+              } else {
+                setIsSignedUp(true);
+              }
+            }}
+            disabled={isSignedUp && !isToday}
           >
-            <ThemedText style={styles.buttonText}>{isToday ? 'Check In' : 'Sign Up'}</ThemedText>
+            <ThemedText style={styles.buttonText}>{isToday ? 'Check In' : isSignedUp ? 'Signed Up' : 'Sign Up'}</ThemedText>
           </Pressable>
           <Pressable 
             style={[styles.button, styles.detailsButton]}
@@ -203,8 +212,11 @@ const styles = StyleSheet.create({
   signupButton: {
     backgroundColor: '#007AFF',
   },
-  checkInButton: {
+  signedUpButton: {
     backgroundColor: '#34C759',
+  },
+  checkInButton: {
+    backgroundColor: '#007AFF',
   },
   detailsButton: {
     backgroundColor: '#666666',

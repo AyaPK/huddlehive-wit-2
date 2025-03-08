@@ -10,6 +10,7 @@ export default function EventDetailsScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const [isImageLoading, setIsImageLoading] = React.useState(true);
+  const [isSignedUp, setIsSignedUp] = React.useState(false);
   const event = events.find(e => e.id === id);
 
   if (!event) {
@@ -46,7 +47,7 @@ export default function EventDetailsScreen() {
             )}
           </ThemedView>
 
-          <ThemedView style={styles.dateStrip}>
+          <ThemedView style={[styles.dateStrip, isSignedUp && { backgroundColor: '#34C759' }]}>
             <ThemedText style={styles.date}>{formattedDate}</ThemedText>
             <ThemedText style={styles.time}>{event.time}</ThemedText>
           </ThemedView>
@@ -80,17 +81,23 @@ export default function EventDetailsScreen() {
               </ThemedView>
             )}
 
-            {/* Check if event is today and render appropriate button */}
             {(() => {
               const currentDate = new Date('2025-03-08T14:48:24Z');
               const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
               return (
                 <Pressable 
-                  style={[styles.button, isToday ? styles.checkInButton : styles.signupButton]}
-                  onPress={() => isToday ? router.push(`/events/check-in?id=${event.id}`) : undefined}
+                  style={[styles.button, isToday ? styles.checkInButton : isSignedUp ? styles.signedUpButton : styles.signupButton]}
+                  onPress={() => {
+                    if (isToday) {
+                      router.push(`/events/check-in?id=${event.id}`);
+                    } else {
+                      setIsSignedUp(true);
+                    }
+                  }}
+                  disabled={isSignedUp && !isToday}
                 >
                   <ThemedText style={styles.buttonText}>
-                    {isToday ? 'Check In' : 'Sign Up for Event'}
+                    {isToday ? 'Check In' : isSignedUp ? 'Signed Up' : 'Sign Up'}
                   </ThemedText>
                 </Pressable>
               );
@@ -210,6 +217,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
   },
   checkInButton: {
+    backgroundColor: '#007AFF',
+  },
+  signedUpButton: {
     backgroundColor: '#34C759',
   },
   buttonText: {
