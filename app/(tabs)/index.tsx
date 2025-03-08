@@ -7,9 +7,6 @@ export default function IndexScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText style={styles.title}>Welcome to HuddleHive!</ThemedText>
-      <Link href="/events" style={styles.link}>
-        <ThemedText style={styles.linkText}>View Events</ThemedText>
-      </Link>
     </ThemedView>
   );
 }
