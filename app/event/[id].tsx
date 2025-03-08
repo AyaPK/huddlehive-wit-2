@@ -2,7 +2,7 @@ import { StyleSheet, Pressable, ScrollView, Image, ActivityIndicator } from 'rea
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useLocalSearchParams } from 'expo-router';
-import { events } from '../(tabs)/events';
+import { events } from '../(tabs)/events/index';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 

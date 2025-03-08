@@ -8,7 +8,7 @@ import { BeeHealthBar } from '@/components/BeeHealthBar';
 export default function IndexScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText style={styles.title}>Welcome to HuddleHive!</ThemedText>
+      <ThemedText style={styles.title}>Welcome to the Buddee network!</ThemedText>
       <View style={styles.beeContainer}>
         <View style={styles.beeWrapper}>
           <AnimatedPixelBee />

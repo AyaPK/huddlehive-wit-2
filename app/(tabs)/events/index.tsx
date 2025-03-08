@@ -16,10 +16,24 @@ export type Event = {
   organizer?: string;
   fullDescription?: string;
   requirements?: string;
+  checkInCode?: string;
 };
 
 // Sample events data - easy to modify
 export const events: Event[] = [
+  {
+    id: '5',
+    title: 'A super cool awesome event that is happening today!!!!',
+    date: '2025-03-08',
+    time: '18:00',
+    location: 'Community Center',
+    description: 'Join us for an evening of board games and fun!',
+    imageUrl: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=800',
+    organizer: 'Community Events Team',
+    fullDescription: 'Get ready for an exciting evening of strategy, luck, and friendly competition! Our Summer Game Night brings together board game enthusiasts and newcomers alike. We\'ll have a wide selection of games from classic favorites to modern hits. Light refreshments will be provided, and our experienced game masters will be there to explain rules and get you started.',
+    requirements: 'No experience necessary! Just bring your enthusiasm and readiness to learn. Ages 16+',
+    checkInCode: 'HAPPY-GAME-NIGHT'
+  },
   {
     id: '1',
     title: 'Summer Game Night',
@@ -67,6 +81,9 @@ function EventCard({ event }: { event: Event }) {
     year: 'numeric'
   });
 
+  const currentDate = new Date('2025-03-08T14:37:45Z');
+  const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
+
   return (
     <ThemedView style={[styles.card, { backgroundColor: '#ffffff' }]}>
       <ThemedView style={styles.dateStrip}>
@@ -85,8 +102,11 @@ function EventCard({ event }: { event: Event }) {
         <ThemedText style={styles.description}>{event.description}</ThemedText>
         
         <ThemedView style={styles.buttonContainer}>
-          <Pressable style={[styles.button, styles.signupButton]}>
-            <ThemedText style={styles.buttonText}>Sign Up</ThemedText>
+          <Pressable 
+            style={[styles.button, isToday ? styles.checkInButton : styles.signupButton]}
+            onPress={() => isToday ? router.push(`/events/check-in?id=${event.id}`) : undefined}
+          >
+            <ThemedText style={styles.buttonText}>{isToday ? 'Check In' : 'Sign Up'}</ThemedText>
           </Pressable>
           <Pressable 
             style={[styles.button, styles.detailsButton]}
@@ -182,6 +202,9 @@ const styles = StyleSheet.create({
   },
   signupButton: {
     backgroundColor: '#007AFF',
+  },
+  checkInButton: {
+    backgroundColor: '#34C759',
   },
   detailsButton: {
     backgroundColor: '#666666',
