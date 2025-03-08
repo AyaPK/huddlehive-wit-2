@@ -23,6 +23,19 @@ export type Event = {
 // Sample events data - easy to modify
 export const events: Event[] = [
   {
+    id: '6',
+    title: 'A past event that you missed :(',
+    date: '2025-01-08',
+    time: '18:00',
+    location: 'Sadsville',
+    description: 'I cannot believe you didnt join us!',
+    imageUrl: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=800',
+    organizer: 'Community Events Team',
+    fullDescription: 'Get ready for an exciting evening of strategy, luck, and friendly competition! Our Summer Game Night brings together board game enthusiasts and newcomers alike. We\'ll have a wide selection of games from classic favorites to modern hits. Light refreshments will be provided, and our experienced game masters will be there to explain rules and get you started.',
+    requirements: 'No experience necessary! Just bring your enthusiasm and readiness to learn. Ages 16+',
+    checkInCode: 'HAPPY-GAME-NIGHT'
+  },
+  {
     id: '5',
     title: 'A super cool awesome event that is happening today!!!!',
     date: '2025-03-08',
@@ -83,12 +96,18 @@ function EventCard({ event }: { event: Event }) {
   });
 
   const currentDate = new Date('2025-03-08T14:37:45Z');
-  const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
+  const eventDate = new Date(event.date);
+  const isToday = eventDate.toDateString() === currentDate.toDateString();
+  const isPast = eventDate < currentDate && !isToday;
   const [isSignedUp, setIsSignedUp] = React.useState(false);
 
   return (
     <ThemedView style={[styles.card, { backgroundColor: '#ffffff' }]}>
-      <ThemedView style={[styles.dateStrip, isSignedUp && { backgroundColor: '#34C759' }]}>
+      <ThemedView style={[
+        styles.dateStrip, 
+        isSignedUp && { backgroundColor: '#34C759' },
+        isPast && !isSignedUp && { backgroundColor: '#FF3B30' }
+      ]}>
         <ThemedText style={styles.date}>
           {formattedDate}
         </ThemedText>
@@ -105,17 +124,28 @@ function EventCard({ event }: { event: Event }) {
         
         <ThemedView style={styles.buttonContainer}>
           <Pressable 
-            style={[styles.button, isToday ? styles.checkInButton : isSignedUp ? styles.signedUpButton : styles.signupButton]}
+            style={[
+              styles.button, 
+              isToday ? styles.checkInButton : 
+              isSignedUp ? styles.signedUpButton : 
+              isPast ? styles.pastButton :
+              styles.signupButton
+            ]}
             onPress={() => {
               if (isToday) {
                 router.push(`/events/check-in?id=${event.id}`);
-              } else {
+              } else if (!isPast) {
                 setIsSignedUp(true);
               }
             }}
-            disabled={isSignedUp && !isToday}
+            disabled={isSignedUp || (isPast && !isToday)}
           >
-            <ThemedText style={styles.buttonText}>{isToday ? 'Check In' : isSignedUp ? 'Signed Up' : 'Sign Up'}</ThemedText>
+            <ThemedText style={styles.buttonText}>
+              {isToday ? 'Check In' : 
+               isSignedUp ? 'Signed Up' : 
+               isPast ? 'Past Event' :
+               'Sign Up'}
+            </ThemedText>
           </Pressable>
           <Pressable 
             style={[styles.button, styles.detailsButton]}
@@ -160,7 +190,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   dateStrip: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#007AFF', // Blue accent for primary state
     padding: 12,
   },
   date: {
@@ -210,16 +240,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   signupButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#007AFF', // Blue accent for primary actions
   },
   signedUpButton: {
-    backgroundColor: '#34C759',
+    backgroundColor: '#34C759', // Green for success states
   },
   checkInButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#007AFF', // Blue accent for primary actions
+  },
+  pastButton: {
+    backgroundColor: '#FF3B30', // Red for error/past states
   },
   detailsButton: {
-    backgroundColor: '#666666',
+    backgroundColor: '#666666', // Light gray for secondary actions
   },
   buttonText: {
     color: '#ffffff',

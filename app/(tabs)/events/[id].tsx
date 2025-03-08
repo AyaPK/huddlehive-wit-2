@@ -28,6 +28,11 @@ export default function EventDetailsScreen() {
     year: 'numeric'
   });
 
+  const currentDate = new Date('2025-03-08T14:48:24Z');
+  const eventDate = new Date(event.date);
+  const isToday = eventDate.toDateString() === currentDate.toDateString();
+  const isPast = eventDate < currentDate;
+
   return (
     <ThemedView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -47,7 +52,11 @@ export default function EventDetailsScreen() {
             )}
           </ThemedView>
 
-          <ThemedView style={[styles.dateStrip, isSignedUp && { backgroundColor: '#34C759' }]}>
+          <ThemedView style={[
+            styles.dateStrip,
+            isSignedUp && { backgroundColor: '#34C759' },
+            isPast && !isSignedUp && { backgroundColor: '#FF3B30' }
+          ]}>
             <ThemedText style={styles.date}>{formattedDate}</ThemedText>
             <ThemedText style={styles.time}>{event.time}</ThemedText>
           </ThemedView>
@@ -81,27 +90,30 @@ export default function EventDetailsScreen() {
               </ThemedView>
             )}
 
-            {(() => {
-              const currentDate = new Date('2025-03-08T14:48:24Z');
-              const isToday = new Date(event.date).toDateString() === currentDate.toDateString();
-              return (
-                <Pressable 
-                  style={[styles.button, isToday ? styles.checkInButton : isSignedUp ? styles.signedUpButton : styles.signupButton]}
-                  onPress={() => {
-                    if (isToday) {
-                      router.push(`/events/check-in?id=${event.id}`);
-                    } else {
-                      setIsSignedUp(true);
-                    }
-                  }}
-                  disabled={isSignedUp && !isToday}
-                >
-                  <ThemedText style={styles.buttonText}>
-                    {isToday ? 'Check In' : isSignedUp ? 'Signed Up' : 'Sign Up'}
-                  </ThemedText>
-                </Pressable>
-              );
-            })()}
+            <Pressable 
+              style={[
+                styles.button,
+                isToday ? styles.checkInButton :
+                isSignedUp ? styles.signedUpButton :
+                isPast ? styles.pastButton :
+                styles.signupButton
+              ]}
+              onPress={() => {
+                if (isToday) {
+                  router.push(`/events/check-in?id=${event.id}`);
+                } else if (!isPast) {
+                  setIsSignedUp(true);
+                }
+              }}
+              disabled={isSignedUp || (isPast && !isToday)}
+            >
+              <ThemedText style={styles.buttonText}>
+                {isToday ? 'Check In' :
+                 isSignedUp ? 'Signed Up' :
+                 isPast ? 'Past Event' :
+                 'Sign Up'}
+              </ThemedText>
+            </Pressable>
           </ThemedView>
         </ThemedView>
       </ScrollView>
@@ -149,7 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   dateStrip: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#007AFF', // Blue accent for primary state
     padding: 12,
   },
   date: {
@@ -214,13 +226,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   signupButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#007AFF', // Blue accent for primary actions
   },
   checkInButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#007AFF', // Blue accent for primary actions
   },
   signedUpButton: {
-    backgroundColor: '#34C759',
+    backgroundColor: '#34C759', // Green for success states
+  },
+  pastButton: {
+    backgroundColor: '#FF3B30', // Red for error/past states
   },
   buttonText: {
     color: '#ffffff',
