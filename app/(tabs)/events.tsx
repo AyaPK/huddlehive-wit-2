@@ -1,14 +1,11 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
-export default function HomeScreen() {
+export default function EventsScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText style={styles.text}>Home Screen</ThemedText>
+      <ThemedText style={styles.text}>Events Screen</ThemedText>
     </ThemedView>
   );
 }
