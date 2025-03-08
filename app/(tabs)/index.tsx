@@ -1,14 +1,15 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { Link } from 'expo-router';
 
-export default function HomeScreen() {
+export default function IndexScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText style={styles.text}>Home Screen</ThemedText>
+      <ThemedText style={styles.title}>Welcome to HuddleHive!</ThemedText>
+      <Link href="/events" style={styles.link}>
+        <ThemedText style={styles.linkText}>View Events</ThemedText>
+      </Link>
     </ThemedView>
   );
 }
@@ -16,10 +17,20 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
   },
-  text: {
-    fontSize: 20,
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  link: {
+    marginTop: 16,
+  },
+  linkText: {
+    fontSize: 16,
+    color: '#007AFF',
   },
 });

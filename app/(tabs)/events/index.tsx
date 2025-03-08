@@ -90,7 +90,7 @@ function EventCard({ event }: { event: Event }) {
           </Pressable>
           <Pressable 
             style={[styles.button, styles.detailsButton]}
-            onPress={() => router.push({ pathname: "/event/[id]", params: { id: event.id }})}
+            onPress={() => router.push({ pathname: "/events/[id]", params: { id: event.id }})}
           >
             <ThemedText style={styles.buttonText}>Details</ThemedText>
           </Pressable>
@@ -104,7 +104,6 @@ export default function EventsScreen() {
   return (
     <ThemedView style={[styles.container, { backgroundColor: '#f5f5f5' }]}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <ThemedText style={[styles.header, { color: '#000000' }]}>Upcoming Events</ThemedText>
         {events.map(event => (
           <EventCard key={event.id} event={event} />
         ))}
@@ -120,12 +119,6 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     padding: 16,
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 10,
   },
   card: {
     borderRadius: 12,
