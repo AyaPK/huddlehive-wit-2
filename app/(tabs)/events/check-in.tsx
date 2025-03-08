@@ -6,6 +6,11 @@ import { events } from './index';
 import React from 'react';
 import { useBeeHealth } from '@/store/beeHealth';
 import { Toast } from '@/components/Toast';
+import { EventContext } from './_layout';
+
+type CheckInScreenProps = {
+  onCheckIn?: (eventId: string, isCheckedIn: boolean) => void;
+};
 
 export default function CheckInScreen() {
   const { id } = useLocalSearchParams();
@@ -14,6 +19,7 @@ export default function CheckInScreen() {
   const [error, setError] = React.useState('');
   const [showToast, setShowToast] = React.useState(false);
   const { increaseHealth } = useBeeHealth();
+  const { updateCheckedInStatus } = React.useContext(EventContext);
   const event = events.find(e => e.id === id);
 
   if (!event) {
@@ -27,6 +33,7 @@ export default function CheckInScreen() {
   const handleCheckIn = () => {
     if (code.toUpperCase() === event.checkInCode) {
       increaseHealth(25);
+      updateCheckedInStatus(event.id, true);
       setShowToast(true);
       setError('');
       setTimeout(() => {

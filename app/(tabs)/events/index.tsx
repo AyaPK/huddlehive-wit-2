@@ -4,6 +4,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { Ionicons } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
 import React from 'react';
+import { EventContext } from './_layout';
 
 // Event type definition for better type safety and documentation
 export type Event = {
@@ -18,6 +19,7 @@ export type Event = {
   fullDescription?: string;
   requirements?: string;
   checkInCode?: string;
+  checked_in?: boolean;
 };
 
 // Sample events data - easy to modify
@@ -86,7 +88,28 @@ export const events: Event[] = [
   },
 ];
 
-function EventCard({ event }: { event: Event }) {
+export default function EventsScreen() {
+  const { checkedInEvents } = React.useContext(EventContext);
+
+  return (
+    <ThemedView style={[styles.container, { backgroundColor: '#f5f5f5' }]}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        {events.map(event => (
+          <EventCard 
+            key={event.id} 
+            event={event} 
+            isCheckedIn={checkedInEvents.has(event.id)}
+          />
+        ))}
+      </ScrollView>
+    </ThemedView>
+  );
+}
+
+function EventCard({ event, isCheckedIn }: { 
+  event: Event; 
+  isCheckedIn: boolean;
+}) {
   const router = useRouter();
   const formattedDate = new Date(event.date).toLocaleDateString('en-US', {
     weekday: 'long',
@@ -106,7 +129,8 @@ function EventCard({ event }: { event: Event }) {
       <ThemedView style={[
         styles.dateStrip, 
         isSignedUp && { backgroundColor: '#34C759' },
-        isPast && !isSignedUp && { backgroundColor: '#FF3B30' }
+        isPast && !isSignedUp && { backgroundColor: '#FF3B30' },
+        isCheckedIn && { backgroundColor: '#34C759' }
       ]}>
         <ThemedText style={styles.date}>
           {formattedDate}
@@ -126,22 +150,22 @@ function EventCard({ event }: { event: Event }) {
           <Pressable 
             style={[
               styles.button, 
-              isToday ? styles.checkInButton : 
+              isToday ? (isCheckedIn ? styles.signedUpButton : styles.checkInButton) : 
               isSignedUp ? styles.signedUpButton : 
               isPast ? styles.pastButton :
               styles.signupButton
             ]}
             onPress={() => {
-              if (isToday) {
+              if (isToday && !isCheckedIn) {
                 router.push(`/events/check-in?id=${event.id}`);
-              } else if (!isPast) {
+              } else if (!isPast && !isSignedUp) {
                 setIsSignedUp(true);
               }
             }}
-            disabled={isSignedUp || (isPast && !isToday)}
+            disabled={isSignedUp || (isPast && !isToday) || isCheckedIn}
           >
             <ThemedText style={styles.buttonText}>
-              {isToday ? 'Check In' : 
+              {isToday ? (isCheckedIn ? 'Checked In' : 'Check In') : 
                isSignedUp ? 'Signed Up' : 
                isPast ? 'Past Event' :
                'Sign Up'}
@@ -155,18 +179,6 @@ function EventCard({ event }: { event: Event }) {
           </Pressable>
         </ThemedView>
       </ThemedView>
-    </ThemedView>
-  );
-}
-
-export default function EventsScreen() {
-  return (
-    <ThemedView style={[styles.container, { backgroundColor: '#f5f5f5' }]}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        {events.map(event => (
-          <EventCard key={event.id} event={event} />
-        ))}
-      </ScrollView>
     </ThemedView>
   );
 }

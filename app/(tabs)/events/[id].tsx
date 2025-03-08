@@ -5,12 +5,14 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { events } from './index';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
+import { EventContext } from './_layout'; // Import EventContext
 
 export default function EventDetailsScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const [isImageLoading, setIsImageLoading] = React.useState(true);
   const [isSignedUp, setIsSignedUp] = React.useState(false);
+  const { checkedInEvents } = React.useContext(EventContext); // Use EventContext
   const event = events.find(e => e.id === id);
 
   if (!event) {
@@ -31,7 +33,8 @@ export default function EventDetailsScreen() {
   const currentDate = new Date('2025-03-08T14:48:24Z');
   const eventDate = new Date(event.date);
   const isToday = eventDate.toDateString() === currentDate.toDateString();
-  const isPast = eventDate < currentDate;
+  const isPast = eventDate < currentDate && !isToday;
+  const isCheckedIn = checkedInEvents.has(event.id);
 
   return (
     <ThemedView style={styles.container}>
@@ -55,7 +58,8 @@ export default function EventDetailsScreen() {
           <ThemedView style={[
             styles.dateStrip,
             isSignedUp && { backgroundColor: '#34C759' },
-            isPast && !isSignedUp && { backgroundColor: '#FF3B30' }
+            isPast && !isSignedUp && { backgroundColor: '#FF3B30' },
+            isCheckedIn && { backgroundColor: '#34C759' }
           ]}>
             <ThemedText style={styles.date}>{formattedDate}</ThemedText>
             <ThemedText style={styles.time}>{event.time}</ThemedText>
@@ -93,22 +97,22 @@ export default function EventDetailsScreen() {
             <Pressable 
               style={[
                 styles.button,
-                isToday ? styles.checkInButton :
+                isToday ? (isCheckedIn ? styles.signedUpButton : styles.checkInButton) :
                 isSignedUp ? styles.signedUpButton :
                 isPast ? styles.pastButton :
                 styles.signupButton
               ]}
               onPress={() => {
-                if (isToday) {
+                if (isToday && !isCheckedIn) {
                   router.push(`/events/check-in?id=${event.id}`);
-                } else if (!isPast) {
+                } else if (!isPast && !isSignedUp) {
                   setIsSignedUp(true);
                 }
               }}
-              disabled={isSignedUp || (isPast && !isToday)}
+              disabled={isSignedUp || (isPast && !isToday) || isCheckedIn}
             >
               <ThemedText style={styles.buttonText}>
-                {isToday ? 'Check In' :
+                {isToday ? (isCheckedIn ? 'Checked In' : 'Check In') :
                  isSignedUp ? 'Signed Up' :
                  isPast ? 'Past Event' :
                  'Sign Up'}
