@@ -1,14 +1,14 @@
 import { ThemedText } from "@/components/ThemedText";
 import { Pressable, StyleProp, Platform, View } from "react-native";
 import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
-import { styles } from "./accessories";
 import { AccessoryItemProps } from "./AccessoryItemProps";
 import { CoinIcon } from "@/components/ui/CoinIcon";
+import { shopStyles } from "@/styles/shop";
 
 export const AccessoryItem: React.FC<AccessoryItemProps> = ({ name, Component, color = '#663399', price }) => (
   <Pressable
     style={({ pressed, hovered }): StyleProp<ViewStyle> => [
-      styles.accessoryItem,
+      shopStyles.itemContainer,
       (pressed || hovered) && {
         backgroundColor: '#00000022',
         transform: [{
@@ -21,12 +21,12 @@ export const AccessoryItem: React.FC<AccessoryItemProps> = ({ name, Component, c
       },
     ]}
   >
-    <Component size={64} color={color} />
-    <ThemedText style={styles.text}>{name}</ThemedText>
+    <Component size={56} color={color} />
+    <ThemedText style={shopStyles.text}>{name}</ThemedText>
     {price && (
-      <View style={styles.priceContainer}>
+      <View style={shopStyles.priceContainer}>
         <CoinIcon size={14} />
-        <ThemedText style={styles.price}>{price}</ThemedText>
+        <ThemedText style={shopStyles.price}>{price}</ThemedText>
       </View>
     )}
   </Pressable>
