@@ -2,26 +2,35 @@ import { StyleSheet, ScrollView, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Ionicons } from '@expo/vector-icons';
+import { Link, useRouter } from 'expo-router';
 
 // Event type definition for better type safety and documentation
-type Event = {
+export type Event = {
   id: string;
   title: string;
   date: string;
   time: string;
   location: string;
   description: string;
+  imageUrl: string;
+  organizer?: string;
+  fullDescription?: string;
+  requirements?: string;
 };
 
 // Sample events data - easy to modify
-const events: Event[] = [
+export const events: Event[] = [
   {
     id: '1',
     title: 'Summer Game Night',
     date: '2025-06-15',
     time: '18:00',
     location: 'Community Center',
-    description: 'Join us for an evening of board games and fun!'
+    description: 'Join us for an evening of board games and fun!',
+    imageUrl: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=800',
+    organizer: 'Community Events Team',
+    fullDescription: 'Get ready for an exciting evening of strategy, luck, and friendly competition! Our Summer Game Night brings together board game enthusiasts and newcomers alike. We\'ll have a wide selection of games from classic favorites to modern hits. Light refreshments will be provided, and our experienced game masters will be there to explain rules and get you started.',
+    requirements: 'No experience necessary! Just bring your enthusiasm and readiness to learn. Ages 16+'
   },
   {
     id: '2',
@@ -29,7 +38,11 @@ const events: Event[] = [
     date: '2025-06-20',
     time: '14:00',
     location: 'Innovation Hub',
-    description: 'Learn about the latest in web development'
+    description: 'Learn about the latest in web development',
+    imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800',
+    organizer: 'Tech Learning Initiative',
+    fullDescription: 'Dive into the world of modern web development in this hands-on workshop. You\'ll learn about the latest frameworks, best practices, and how to build responsive, accessible websites. Our experienced instructors will guide you through practical exercises and real-world examples.',
+    requirements: 'Basic understanding of HTML and CSS. Please bring your laptop with a modern web browser installed.'
   },
   {
     id: '3',
@@ -37,11 +50,16 @@ const events: Event[] = [
     date: '2025-07-01',
     time: '11:00',
     location: 'Zoopla Offices',
-    description: 'For amazing women to come and make amazing things!'
+    description: 'For amazing women to come and make amazing things!',
+    imageUrl: 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=800',
+    organizer: 'Women in Tech',
+    fullDescription: 'Join us for an inspiring day of creation, collaboration, and coding! This women-focused hackathon aims to bring together talented individuals from diverse backgrounds to tackle real-world challenges. Whether you\'re a seasoned developer or just starting your tech journey, you\'ll find a welcoming and supportive environment to learn and create.',
+    requirements: 'Open to women and non-binary individuals of all skill levels. Bring your laptop and ideas!'
   },
 ];
 
 function EventCard({ event }: { event: Event }) {
+  const router = useRouter();
   const formattedDate = new Date(event.date).toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'long',
@@ -70,7 +88,10 @@ function EventCard({ event }: { event: Event }) {
           <Pressable style={[styles.button, styles.signupButton]}>
             <ThemedText style={styles.buttonText}>Sign Up</ThemedText>
           </Pressable>
-          <Pressable style={[styles.button, styles.detailsButton]}>
+          <Pressable 
+            style={[styles.button, styles.detailsButton]}
+            onPress={() => router.push({ pathname: "/event/[id]", params: { id: event.id }})}
+          >
             <ThemedText style={styles.buttonText}>Details</ThemedText>
           </Pressable>
         </ThemedView>
