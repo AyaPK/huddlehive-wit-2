@@ -1,7 +1,8 @@
-import { StyleSheet, View, Pressable, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Pressable, ScrollView, Image, ActivityIndicator, Linking } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
 import { events } from './index';
 import { Ionicons } from '@expo/vector-icons';
 import { PageLayout } from '@/components/PageLayout';
@@ -89,25 +90,42 @@ export default function EventDetailsScreen() {
                 </ThemedView>
               )}
 
-              <Pressable 
-                style={[
-                  styles.button,
-                  isToday ? styles.checkInButton : 
-                  hasSignedUp ? styles.signedUpButton : styles.signupButton
-                ]}
-                onPress={() => {
-                  if (isToday) {
-                    router.push(`/events/check-in?id=${event.id}`);
-                  } else if (!hasSignedUp) {
-                    signUpForEvent(event.id);
-                  }
-                }}
-                disabled={hasSignedUp && !isToday}
-              >
-                <ThemedText style={styles.buttonText}>
-                  {isToday ? 'Check In' : hasSignedUp ? 'Signed Up' : 'Sign Up for Event'}
-                </ThemedText>
-              </Pressable>
+              <ThemedView style={styles.buttonContainer}>
+                <Pressable 
+                  style={[
+                    styles.button,
+                    isToday ? styles.checkInButton : 
+                    hasSignedUp ? styles.signedUpButton : styles.signupButton
+                  ]}
+                  onPress={() => {
+                    if (isToday) {
+                      router.push(`/events/check-in?id=${event.id}`);
+                    } else if (!hasSignedUp) {
+                      signUpForEvent(event.id);
+                    }
+                  }}
+                  disabled={hasSignedUp && !isToday}
+                >
+                  <ThemedText style={styles.buttonText}>
+                    {isToday ? 'Check In' : hasSignedUp ? 'Signed Up' : 'Sign Up for Event'}
+                  </ThemedText>
+                </Pressable>
+
+                {hasSignedUp && !isToday && (
+                  <Pressable 
+                    style={[styles.button, styles.shareButton]}
+                    onPress={async () => {
+                      const url = 'https://www.linkedin.com/sharing/share-offsite/';
+                      await WebBrowser.openAuthSessionAsync(url, 'huddlehive://');
+                    }}
+                  >
+                    <ThemedView style={styles.shareButtonContent}>
+                      <Ionicons name="logo-linkedin" size={20} color="#FFFFFF" />
+                      <ThemedText style={[styles.buttonText, styles.shareButtonText]}>Share on LinkedIn</ThemedText>
+                    </ThemedView>
+                  </Pressable>
+                )}
+              </ThemedView>
             </ThemedView>
           </View>
         </View>
@@ -227,13 +245,15 @@ const styles = StyleSheet.create({
     color: '#444444',
     lineHeight: 24,
   },
+  buttonContainer: {
+    gap: 12,
+  },
   button: {
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 16,
   },
   signupButton: {
     backgroundColor: '#007AFF',
@@ -243,6 +263,20 @@ const styles = StyleSheet.create({
   },
   checkInButton: {
     backgroundColor: '#34C759',
+  },
+  shareButton: {
+    backgroundColor: '#0077B5',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  shareButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  shareButtonText: {
+    marginLeft: 8,
   },
   buttonText: {
     color: '#ffffff',
