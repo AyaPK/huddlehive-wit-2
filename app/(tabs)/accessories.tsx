@@ -1,16 +1,24 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+import {
+  BaseballCap,
+  ChefHat,
+  NoAccessory,
+} from '@/components/ui/pixel-accessories';
 import { AccessoryItem } from './AccessoryItem';
 import { SkinItem } from './SkinItem';
 import { PageLayout } from '@/components/PageLayout';
 import { shopStyles } from '@/styles/shop';
 import { useInventory } from '@/context/InventoryContext';
-import { ChefHat, BaseballCap } from '@/components/ui/pixel-accessories';
+import { AnimatedPixelBee } from '@/components/AnimatedPixelBee';
+import { ACCESSORY_TYPE, SKIN_TYPE } from '@/constants/Accessories';
 
 export default function AccessoriesScreen() {
-  const { purchasedAccessories, purchasedSkins } = useInventory();
+  const { purchasedAccessories, purchasedSkins, selectedSkin, setSelectedSkin, selectedAccessory, setSelectedAccessory } = useInventory();
 
   const defaultAccessories = [
+    { name: 'None', Component: NoAccessory, color: '#FFFFFF'},
     { name: 'Chef Hat', Component: ChefHat, color: '#FFFFFF' },
     { name: 'Baseball Cap', Component: BaseballCap, color: '#0066CC' },
   ];
@@ -22,12 +30,26 @@ export default function AccessoriesScreen() {
     <PageLayout>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <ThemedText style={styles.pageTitle}>My Accessories</ThemedText>
+        <View style={styles.beeContainer}>
+          <View style={styles.beeWrapper}>
+            <AnimatedPixelBee skin={selectedSkin} accessory={selectedAccessory} />
+          </View>
+        </View>
         {allSkins.length > 0 && (
           <>
             <ThemedText style={styles.subtitle}>Your Skins</ThemedText>
             <View style={shopStyles.grid}>
-              {allSkins.map((skin, index) => (
-                <SkinItem key={index} {...skin} />
+              {allSkins.map((item, index) => (
+                <SkinItem 
+                  key={index} 
+                  {...item} 
+                  onPress={() => {
+                    // Convert skin name to lowercase and ensure it's either 'normal' or 'rainbow'
+                    const newSkin = item.name.toLowerCase();
+                    setSelectedSkin(newSkin as SKIN_TYPE);
+                  }}
+                  selected={item.name.toLowerCase() === selectedSkin} 
+                />
               ))}
             </View>
           </>
@@ -35,7 +57,15 @@ export default function AccessoriesScreen() {
         <ThemedText style={styles.subtitle}>Your Accessories</ThemedText>
         <View style={shopStyles.grid}>
           {allAccessories.map((accessory, index) => (
-            <AccessoryItem key={index} {...accessory} />
+            <AccessoryItem 
+              key={index} 
+              {...accessory}
+              onPress={() => {
+                const newAccessory = accessory.name.toLowerCase();
+                setSelectedAccessory(newAccessory as ACCESSORY_TYPE);
+              }}   
+              selected={accessory.name.toLowerCase() === selectedAccessory}
+            />
           ))}
         </View>
         {allAccessories.length === 0 && (
@@ -51,6 +81,19 @@ export default function AccessoriesScreen() {
 }
 
 export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  beeContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    gap: 20,
+    justifyContent: 'center',
+  },
+  beeWrapper: {
+    alignItems: 'center',
+    gap: 12,
+  },
   scrollView: {
     flex: 1,
     padding: 16,

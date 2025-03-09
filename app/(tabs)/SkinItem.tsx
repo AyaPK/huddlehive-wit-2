@@ -8,9 +8,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 interface SkinItemComponentProps extends ShopItemProps {
   onPress?: () => void;
+  selected?: boolean;
 }
 
-export const SkinItem: React.FC<SkinItemComponentProps> = ({ name, color, price, onPress }) => {
+export const SkinItem: React.FC<SkinItemComponentProps> = ({ name, color, price, onPress, selected }) => {
   const isRainbow = name.toLowerCase() === 'rainbow';
   const rainbowColors = ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#8F00FF'] as const;
 
@@ -19,6 +20,11 @@ export const SkinItem: React.FC<SkinItemComponentProps> = ({ name, color, price,
       onPress={onPress}
       style={({ pressed, hovered }): StyleProp<ViewStyle> => [
         shopStyles.itemContainer,
+        selected && {
+          backgroundColor: '#00000022',
+          borderWidth: 2,
+          borderColor: '#007AFF',
+        },
         (pressed || hovered) && {
           backgroundColor: '#00000022',
           transform: [{

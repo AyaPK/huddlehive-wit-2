@@ -8,9 +8,10 @@ import { CatEarsHeadband, Fedora, NewsBoy } from '@/components/ui/pixel-accessor
 import { shopStyles } from '@/styles/shop';
 import { useInventory } from '@/context/InventoryContext';
 import { PageLayout } from '@/components/PageLayout';
+import { SKIN_TYPE } from '@/constants/Accessories';
 
 export interface ShopItemProps {
-  name: string;
+  name: SKIN_TYPE;
   color: string;
   price?: number;
 }
@@ -25,8 +26,8 @@ export default function ShopScreen() {
   ].filter(item => !purchasedAccessories.some(purchased => purchased.name === item.name));
 
   const skins: ShopItemProps[] = [
-    { name: 'Pink', color: '#FF69B4', price: 100 },
-    { name: 'Orange', color: '#FF4500', price: 100 },
+    { name: SKIN_TYPE.PINK, color: '#FF69B4', price: 100 },
+    { name: SKIN_TYPE.ORANGE, color: '#FF4500', price: 100 },
   ].filter(item => !purchasedSkins.some(purchased => purchased.name === item.name));
 
   return (
