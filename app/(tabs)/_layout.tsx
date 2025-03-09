@@ -4,6 +4,10 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { useWindowDimensions, View } from 'react-native';
 import { CoinBalance } from '@/components/ui/CoinBalance';
 import { useCoinBalance } from '@/context/CoinBalanceContext';
+import { BeeFact } from '@/components/BeeFact';
+import { ParamListBase } from '@react-navigation/native';
+import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
+import { ThemedText } from '@/components/ThemedText';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -12,9 +16,25 @@ export default function TabLayout() {
   const showLabels = width >= 768;
 
   const commonHeaderOptions = {
-    headerRight: () => (
-      <View style={{ marginRight: 16 }}>
-        <CoinBalance balance={balance} />
+    header: ({ navigation, route, options }: BottomTabHeaderProps) => (
+      <View style={{ 
+        backgroundColor: 'white',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e1e1e1'
+      }}>
+        <View style={{ 
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+        }}>
+          <ThemedText style={{ fontSize: 18, fontWeight: 'bold', minWidth: 80 }}>{options.title}</ThemedText>
+          <View style={{ flex: 1, marginHorizontal: 16 }}>
+            <BeeFact />
+          </View>
+          <CoinBalance balance={balance} />
+        </View>
       </View>
     ),
   };
@@ -46,7 +66,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           headerShown: true,
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color, focused }: any) => (
             <Ionicons 
               name={focused ? 'home' : 'home-outline'} 
               size={24} 
@@ -60,7 +80,7 @@ export default function TabLayout() {
         options={{
           title: 'Event Prep',
           headerShown: true,
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color, focused }: any) => (
             <Ionicons 
               name={focused ? 'time' : 'time-outline'} 
               size={24} 
@@ -74,7 +94,7 @@ export default function TabLayout() {
         options={{
           title: 'Accessories',
           headerShown: true,
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color, focused }: any) => (
             <Ionicons 
               name={focused ? 'pricetag' : 'pricetag-outline'} 
               size={24} 
@@ -88,7 +108,7 @@ export default function TabLayout() {
         options={{
           title: 'Shop',
           headerShown: true,
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color, focused }: any) => (
             <Ionicons 
               name={focused ? 'cart' : 'cart-outline'} 
               size={24} 
@@ -102,7 +122,7 @@ export default function TabLayout() {
         options={{
           title: 'Events',
           headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color, focused }: any) => (
             <Ionicons 
               name={focused ? 'calendar' : 'calendar-outline'} 
               size={24} 
@@ -116,7 +136,7 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           headerShown: true,
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color, focused }: any) => (
             <Ionicons 
               name={focused ? 'settings' : 'settings-outline'} 
               size={24} 

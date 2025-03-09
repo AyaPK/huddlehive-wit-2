@@ -12,7 +12,6 @@ import { useSignupState } from '@/hooks/useSignupState';
 export default function EventDetailsScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const [isImageLoading, setIsImageLoading] = React.useState(true);
   const { isSignedUp, signUpForEvent } = useSignupState();
   const event = events.find(e => e.id === id);
 
@@ -43,16 +42,10 @@ export default function EventDetailsScreen() {
         <View style={styles.container}>
           <View style={styles.card}>
             <View style={styles.imageContainer}>
-              {isImageLoading && (
-                <ThemedView style={styles.imageLoadingOverlay}>
-                  <ActivityIndicator size="large" color="#007AFF" />
-                </ThemedView>
-              )}
               <Image
-                source={{ uri: event.imageUrl }}
-                style={[styles.image, isImageLoading && styles.hiddenImage]}
-                onLoadStart={() => setIsImageLoading(true)}
-                onLoadEnd={() => setIsImageLoading(false)}
+                source={event.imageUrl}
+                style={styles.image}
+                resizeMode="cover"
               />
             </View>
 
@@ -171,20 +164,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-  },
-  hiddenImage: {
-    opacity: 0,
-  },
-  imageLoadingOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1,
   },
   dateStrip: {
     backgroundColor: '#007AFF',
