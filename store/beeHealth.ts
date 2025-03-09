@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StateCreator } from 'zustand';
 
 interface BeeHealthState {
   currentHealth: number;
@@ -11,37 +10,34 @@ interface BeeHealthState {
   resetHealth: () => void;
 }
 
-type BeeHealthStore = StateCreator<
-  BeeHealthState,
-  [],
-  [],
-  BeeHealthState
->;
-
 const DEFAULT_HEALTH = 50;
-
-const createBeeHealthStore: BeeHealthStore = (set) => ({
-  currentHealth: DEFAULT_HEALTH,
-  maxHealth: 100,
-  increaseHealth: (amount: number) =>
-    set((state: BeeHealthState) => ({
-      currentHealth: Math.min(state.currentHealth + amount, state.maxHealth),
-    })),
-  decreaseHealth: (amount: number) =>
-    set((state: BeeHealthState) => ({
-      currentHealth: Math.max(state.currentHealth - amount, 0),
-    })),
-  resetHealth: () =>
-    set(() => ({
-      currentHealth: DEFAULT_HEALTH,
-    })),
-});
+const MAX_HEALTH = 100;
 
 export const useBeeHealth = create<BeeHealthState>()(
   persist(
-    createBeeHealthStore,
+    (set) => ({
+      currentHealth: DEFAULT_HEALTH,
+      maxHealth: MAX_HEALTH,
+
+      increaseHealth: (amount) =>
+        set((state) => ({
+          currentHealth: Math.min(state.currentHealth + amount, state.maxHealth),
+        })),
+
+      decreaseHealth: (amount) =>
+        set((state) => ({
+          currentHealth: Math.max(state.currentHealth - amount, 0),
+        })),
+
+      resetHealth: () =>
+        set({
+          currentHealth: DEFAULT_HEALTH,
+          maxHealth: MAX_HEALTH,
+        }),
+    }),
     {
       name: 'bee-health-storage',
+      version: 1,
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

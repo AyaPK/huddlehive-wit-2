@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import { ThemedView } from './ThemedView';
 import { GardenBackground } from './GardenBackground';
 
@@ -11,9 +11,19 @@ export function PageLayout({ children }: PageLayoutProps) {
   return (
     <ThemedView style={styles.container}>
       <GardenBackground />
-      <View style={styles.content}>
-        {children}
-      </View>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.keyboardAvoid}
+      >
+        <ScrollView 
+          style={styles.scrollView}
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          {children}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </ThemedView>
   );
 }
@@ -22,8 +32,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  content: {
+  keyboardAvoid: {
     flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  content: {
     padding: 20,
+    minHeight: '100%',
   },
 });
