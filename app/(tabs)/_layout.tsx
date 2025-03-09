@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { useWindowDimensions } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import { CoinBalance } from '@/components/ui/CoinBalance';
 import { useCoinBalance } from '@/context/CoinBalanceContext';
 
@@ -10,6 +10,14 @@ export default function TabLayout() {
   const { width } = useWindowDimensions();
   const { balance } = useCoinBalance();
   const showLabels = width >= 768;
+
+  const commonHeaderOptions = {
+    headerRight: () => (
+      <View style={{ marginRight: 16 }}>
+        <CoinBalance balance={balance} />
+      </View>
+    ),
+  };
 
   return (
     <Tabs
@@ -31,6 +39,7 @@ export default function TabLayout() {
         tabBarIconStyle: {
           marginBottom: showLabels ? 0 : 0,
         },
+        ...commonHeaderOptions,
       }}>
       <Tabs.Screen
         name="index"
