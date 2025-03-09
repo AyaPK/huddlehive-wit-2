@@ -40,7 +40,6 @@ export const EventPrepJourney: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.journeyLine}>
         <View style={styles.lineWrapper}>
-          {/* Line segments between tasks */}
           {TASKS.slice(0, -1).map((task) => (
             <View
               key={task.id}
@@ -99,7 +98,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: 20,
-    gap: 40,
     backgroundColor: 'transparent',
   },
   journeyLine: {
